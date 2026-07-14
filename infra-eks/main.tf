@@ -47,7 +47,15 @@ module "eks" {
     coredns                = {}
     kube-proxy             = {}
     vpc-cni                = { before_compute = true }
-    eks-pod-identity-agent = { before_compute = true } # requerido para Pod Identity (Bedrock)
+    eks-pod-identity-agent = { before_compute = true } # requerido para Pod Identity (Bedrock + EBS CSI)
+    # Sin esto NINGÚN PVC liga en EKS 1.33 (no hay provisioner in-tree) y
+    # kagent-postgresql queda Pending. En kind lo regala local-path-provisioner.
+    aws-ebs-csi-driver = {
+      pod_identity_association = [{
+        role_arn        = aws_iam_role.ebs_csi.arn
+        service_account = "ebs-csi-controller-sa"
+      }]
+    }
   }
 
   vpc_id                   = module.vpc.vpc_id
@@ -56,8 +64,14 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      instance_types = ["t3.large"]
-      ami_type       = "AL2023_x86_64_STANDARD"
+      # Graviton4 + Bottlerocket (OS minimalista para contenedores: boot rápido,
+      # superficie de ataque chica — buen material de charla). Todo el stack ya
+      # corrió en arm64 (kind sobre Apple Silicon), así que ARM es riesgo cero.
+      # Bleeding edge: cambia a ["m9g.large"] (Graviton5, GA jun 2026) si el MNG
+      # lo acepta en tu cuenta; m8g es la opción probada. Evita *.medium: en EKS
+      # con VPC CNI los medium Graviton topan ~8 pods/nodo y el stack trae ~45.
+      instance_types = ["m8g.large"]
+      ami_type       = "BOTTLEROCKET_ARM_64"
       min_size       = 2
       max_size       = 3
       desired_size   = 2 # honrado solo al crear; el módulo lo ignora en applies posteriores

@@ -21,11 +21,20 @@ data "aws_iam_policy_document" "pod_identity_assume" {
 locals {
   account_id = data.aws_caller_identity.current.account_id
 
-  # Sonnet 4.6 en US solo es invocable vía perfil de inferencia cross-region.
+  # Claude en US solo es invocable vía perfil de inferencia cross-region (us.*).
   # Verifica las regiones destino reales antes de aplicar:
   #   aws bedrock get-inference-profile \
   #     --inference-profile-identifier us.anthropic.claude-sonnet-4-6 --region us-east-1
   bedrock_regions = ["us-east-1", "us-east-2", "us-west-2"]
+
+  # El "menu de cerebros" para la demo (ModelConfigs en ai/kagent/).
+  # gpt-oss NO va aquí: entra por el endpoint Mantle OpenAI-compatible con
+  # Bedrock API key (bearer), no por SigV4/Pod Identity.
+  bedrock_claude_models = [
+    "anthropic.claude-sonnet-4-6",
+    "anthropic.claude-sonnet-5",
+    "anthropic.claude-opus-4-8",
+  ]
 }
 
 data "aws_iam_policy_document" "bedrock_invoke" {
@@ -35,18 +44,31 @@ data "aws_iam_policy_document" "bedrock_invoke" {
     sid     = "InferenceProfile"
     effect  = "Allow"
     actions = ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"]
-    resources = [for r in local.bedrock_regions :
-      "arn:aws:bedrock:${r}:${local.account_id}:inference-profile/us.anthropic.claude-sonnet-4-6"
-    ]
+    resources = flatten([for m in local.bedrock_claude_models : [
+      for r in local.bedrock_regions :
+      "arn:aws:bedrock:${r}:${local.account_id}:inference-profile/us.${m}"
+    ]])
   }
   statement {
     sid     = "FoundationModel"
     effect  = "Allow"
     actions = ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"]
-    resources = [for r in local.bedrock_regions :
-      "arn:aws:bedrock:${r}::foundation-model/anthropic.claude-sonnet-4-6" # doble ':' (sin account)
-    ]
+    resources = flatten([for m in local.bedrock_claude_models : [
+      for r in local.bedrock_regions :
+      "arn:aws:bedrock:${r}::foundation-model/${m}" # doble ':' (sin account)
+    ]])
   }
+}
+
+# EBS CSI driver: mismo trust de Pod Identity, política administrada de AWS.
+resource "aws_iam_role" "ebs_csi" {
+  name               = "${var.cluster_name}-ebs-csi"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume.json
+}
+
+resource "aws_iam_role_policy_attachment" "ebs_csi" {
+  role       = aws_iam_role.ebs_csi.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
 
 resource "aws_iam_role" "bedrock_agents" {

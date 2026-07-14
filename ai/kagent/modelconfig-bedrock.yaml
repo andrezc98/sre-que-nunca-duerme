@@ -1,14 +1,39 @@
-# El cerebro de producción: Claude vía Amazon Bedrock. Razonamiento más profundo.
+# Los cerebros de producción: Claude vía Amazon Bedrock (SigV4 / Pod Identity).
 # Camino cloud/grabado — requiere cuenta AWS (la provee el usuario "a su tiempo").
+# Tres niveles para la demo: swap-brain.sh acepta cualquiera de estos nombres.
 apiVersion: kagent.dev/v1alpha2
 kind: ModelConfig
 metadata:
-  name: bedrock-claude
+  name: bedrock-claude                    # Sonnet 4.6: el balance por defecto
   namespace: kagent
 spec:
   provider: Bedrock                       # enum exacto: Bedrock (NO "AmazonBedrock")
-  model: us.anthropic.claude-sonnet-4-6   # perfil de inferencia US; usa us.anthropic.claude-opus-4-8 para razonamiento más profundo
-  apiKeySecret: bedrock-credentials       # omitir si usas IRSA / IAM role en EKS
+  model: us.anthropic.claude-sonnet-4-6   # perfil de inferencia cross-region US
+  apiKeySecret: bedrock-credentials       # omitir si usas Pod Identity en EKS
+  bedrock:
+    region: us-east-1
+---
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: bedrock-sonnet-5                  # Sonnet 5: lo último de la línea Sonnet
+  namespace: kagent
+spec:
+  provider: Bedrock
+  model: us.anthropic.claude-sonnet-5
+  apiKeySecret: bedrock-credentials
+  bedrock:
+    region: us-east-1
+---
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: bedrock-opus                      # Opus 4.8: razonamiento más profundo
+  namespace: kagent
+spec:
+  provider: Bedrock
+  model: us.anthropic.claude-opus-4-8
+  apiKeySecret: bedrock-credentials
   bedrock:
     region: us-east-1
 ---
