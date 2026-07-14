@@ -91,4 +91,6 @@ infra-eks/    OpenTofu para el camino cloud (opcional, grabado)
 - [x] Kagent manifests v1alpha2 (Agent + ModelConfig Ollama/Bedrock + tools Prometheus)
 - [x] Observabilidad + GitOps: Argo CD app-of-apps (kube-prometheus-stack, Alloy/OTel, Fluent Bit) + K8sGPT operator/CR (Ollama y Bedrock)
 - [x] OpenTofu EKS + IAM Bedrock (Pod Identity) — *escrito; apply gated en cuenta AWS*
-- [ ] **Probar en cluster** (kind local, o EKS con tu cuenta) — *nada se ha ejecutado aún*
+- [x] **Probado en kind local end-to-end** (2026-07-14): k8sgpt CLI+operator, agente
+  kagent (kubectl + PromQL vía MCP), swap de cerebro, app-of-apps Argo CD.
+- [ ] Camino EKS + Bedrock con cuenta AWS real (gated en el usuario) + grabar el clip.
