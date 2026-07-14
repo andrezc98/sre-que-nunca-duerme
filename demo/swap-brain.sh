@@ -4,12 +4,13 @@
 #   ./swap-brain.sh bedrock-claude   -> Claude Sonnet 4.6 en Bedrock
 #   ./swap-brain.sh bedrock-sonnet-5 -> Claude Sonnet 5 en Bedrock
 #   ./swap-brain.sh bedrock-opus     -> Claude Opus 4.8 en Bedrock
-#   ./swap-brain.sh gpt-oss-bedrock  -> GPT open-weight via endpoint Mantle
+# (GPT-5.6 en Bedrock quedo fuera: solo se sirve por la Responses API del
+#  endpoint Mantle y el provider OpenAI de kagent habla Chat Completions.)
 set -euo pipefail
 MODEL="${1:-}"
 case "$MODEL" in
-  ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus|gpt-oss-bedrock) ;;
-  *) echo "Uso: $0 <ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus|gpt-oss-bedrock>"; exit 1 ;;
+  ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus) ;;
+  *) echo "Uso: $0 <ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus>"; exit 1 ;;
 esac
 
 kubectl -n kagent patch agent sre-agent --type merge \

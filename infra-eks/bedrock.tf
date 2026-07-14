@@ -28,8 +28,10 @@ locals {
   bedrock_regions = ["us-east-1", "us-east-2", "us-west-2"]
 
   # El "menu de cerebros" para la demo (ModelConfigs en ai/kagent/).
-  # gpt-oss NO va aquí: entra por el endpoint Mantle OpenAI-compatible con
-  # Bedrock API key (bearer), no por SigV4/Pod Identity.
+  # GPT-5.6 en Bedrock quedó fuera del menú: solo se sirve vía Responses API
+  # (namespace IAM bedrock-mantle:*, SigV4 soportado) y kagent habla Chat
+  # Completions. Si algún día kagent/LiteLLM soportan ese path, agregar aquí
+  # un statement bedrock-mantle:CreateInference.
   bedrock_claude_models = [
     "anthropic.claude-sonnet-4-6",
     "anthropic.claude-sonnet-5",
