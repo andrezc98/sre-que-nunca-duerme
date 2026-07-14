@@ -60,20 +60,21 @@ resource "aws_iam_role_policy" "bedrock" {
   policy = data.aws_iam_policy_document.bedrock_invoke.json
 }
 
-# Kagent: SA 'kagent' en namespace 'kagent'.
+# Kagent: quien llama a Bedrock es el POD DEL AGENTE (no el controller), y su
+# SA se llama como el Agent CR. Verificado en kind 2026-07-14: sre-agent.
+# (Si agregas otro Agent con ModelConfig Bedrock, necesita su propia association.)
 resource "aws_eks_pod_identity_association" "kagent" {
   cluster_name    = module.eks.cluster_name
   namespace       = "kagent"
-  service_account = "kagent"
+  service_account = "sre-agent"
   role_arn        = aws_iam_role.bedrock_agents.arn
 }
 
-# K8sGPT operator. Confirmar el nombre real del SA antes de aplicar:
-#   kubectl -n k8sgpt-operator-system get deploy \
-#     -o jsonpath='{.items[*].spec.template.spec.serviceAccountName}'
+# K8sGPT: quien llama a Bedrock es el server pod que el operator crea desde el
+# CR (no el manager). SA verificado en kind 2026-07-14 con el chart 0.2.27.
 resource "aws_eks_pod_identity_association" "k8sgpt" {
   cluster_name    = module.eks.cluster_name
   namespace       = "k8sgpt-operator-system"
-  service_account = "release-k8sgpt-operator" # depende del release name del Helm
+  service_account = "k8sgpt-k8sgpt-operator-system"
   role_arn        = aws_iam_role.bedrock_agents.arn
 }
