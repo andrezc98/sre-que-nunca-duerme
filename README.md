@@ -67,6 +67,10 @@ kagent dashboard              # -> http://localhost:8082
 kubectl create namespace argocd
 kubectl apply -n argocd --server-side --force-conflicts \
   -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.4/manifests/install.yaml
+# CRITICO en kind >= 0.32: kindnetd trae un enforcement de NetworkPolicy (nfqueue)
+# que hace blackhole del trafico pod-a-pod de los pods de Argo CD (rompe su DNS,
+# apps quedan en Unknown). En un cluster local de demo, borra las netpols:
+kubectl -n argocd delete networkpolicies --all
 kubectl apply -f gitops/root.yaml
 kubectl apply -f ai/k8sgpt/k8sgpt-ollama.yaml   # tras el operator Synced
 ```

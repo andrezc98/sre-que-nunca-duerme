@@ -10,11 +10,12 @@ metadata:
 spec:
   ai:
     enabled: true
-    backend: ollama
+    # El CRD del operator 0.2.27 NO acepta "ollama" (si: localai, openai, amazonbedrock...).
+    # localai = protocolo OpenAI-compatible -> apunta al endpoint /v1 de Ollama.
+    # (Ojo: el CLI es al reves — backend ollama nativo, baseurl SIN /v1.)
+    backend: localai
     model: qwen3.5:4b
-    # Ollama en la laptop. SIN /v1: el backend ollama de k8sgpt usa la API nativa
-    # (/api/chat); con /v1 responde 404 (verificado con el CLI 0.4.36).
-    baseUrl: http://host.docker.internal:11434
+    baseUrl: http://host.docker.internal:11434/v1
   noCache: false
   # version/repository: omitidos a propósito -> el operator usa su imagen por defecto
   # (compatible). Para el camino Bedrock, ver el plan: backend amazonbedrock + secret.
