@@ -1,0 +1,16 @@
+# Terraform / OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+
+# Kube / secrets
+kubeconfig*
+*.kubeconfig
+.env
+*-secret.yaml
+
+# OS
+.DS_Store

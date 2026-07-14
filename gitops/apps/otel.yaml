@@ -1,0 +1,19 @@
+# La capa OpenTelemetry: Grafana Alloy (distro del OTel Collector).
+# OTel se graduó en CNCF (may 2026); es el "pegamento" estándar del stack.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otel-collector
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: alloy
+    targetRevision: 1.10.1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: otel
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [ CreateNamespace=true ]

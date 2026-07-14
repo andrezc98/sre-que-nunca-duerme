@@ -1,0 +1,27 @@
+# Fluent Bit 4 (CNCF graduado): forwarder ligero de logs, ahora también OTLP.
+# Config mínima: saca logs a stdout (visibles con kubectl logs) para no depender
+# de un backend en la demo. En prod apuntarías a Loki / OTel.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: logging
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://fluent.github.io/helm-charts
+    chart: fluent-bit
+    targetRevision: 0.57.7      # appVersion 5.x
+    helm:
+      values: |
+        config:
+          outputs: |
+            [OUTPUT]
+                Name   stdout
+                Match  *
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [ CreateNamespace=true ]

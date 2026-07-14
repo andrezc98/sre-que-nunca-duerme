@@ -1,0 +1,20 @@
+# K8sGPT en el cluster: escaneo continuo con backend local (Ollama).
+# El operator escribe hallazgos como objetos Result -> kubectl get results -A.
+# Aplicar DESPUÉS de que el operator k8sgpt esté Synced.
+# (La demo hero en vivo usa el CLI: k8sgpt analyze --explain.)
+apiVersion: core.k8sgpt.ai/v1alpha1
+kind: K8sGPT
+metadata:
+  name: k8sgpt-ollama
+  namespace: k8sgpt-operator-system
+spec:
+  ai:
+    enabled: true
+    backend: ollama
+    model: qwen3.5:4b
+    # Ollama en la laptop. SIN /v1: el backend ollama de k8sgpt usa la API nativa
+    # (/api/chat); con /v1 responde 404 (verificado con el CLI 0.4.36).
+    baseUrl: http://host.docker.internal:11434
+  noCache: false
+  # version/repository: omitidos a propósito -> el operator usa su imagen por defecto
+  # (compatible). Para el camino Bedrock, ver el plan: backend amazonbedrock + secret.

@@ -1,0 +1,14 @@
+# El cerebro local: Qwen vía Ollama. Gratis, offline, a prueba de WiFi.
+# Ollama corre en la laptop (GPU Metal); el cluster kind lo alcanza por el host.
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: ollama-qwen
+  namespace: kagent
+spec:
+  provider: Ollama
+  model: qwen3.5:4b          # fija el tag EXACTO que pruebes
+  ollama:
+    # En kind sobre Docker Desktop u OrbStack, los pods alcanzan al host por
+    # host.docker.internal (verificado en OrbStack con un pod curl).
+    host: http://host.docker.internal:11434

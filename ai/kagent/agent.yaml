@@ -1,0 +1,36 @@
+# El "SRE que nunca duerme": un agente como recurso nativo de Kubernetes.
+# El cerebro (modelConfig) es intercambiable -> ver demo/swap-brain.sh.
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: sre-agent
+  namespace: kagent
+spec:
+  type: Declarative
+  declarative:
+    modelConfig: ollama-qwen      # el cerebro; swap a bedrock-claude en vivo
+    stream: true
+    systemMessage: |
+      Eres un SRE de Kubernetes. Diagnostica problemas del cluster, consulta el
+      estado de los recursos y las métricas, y propone acciones concretas.
+      Responde en español, claro y conciso. NUNCA ejecutes acciones destructivas
+      sin aprobación humana.
+      Al usar cualquier prometheus_*_tool, pasa siempre
+      prometheus_url: http://kube-prometheus-stack-prometheus.monitoring:9090
+    tools:
+      # Un solo RemoteMCPServer preinstalado (kagent install --profile demo) expone
+      # kubectl Y Prometheus. Los 7 nombres verificados en vivo contra kagent 0.9.11:
+      # kubectl -n kagent get remotemcpserver kagent-tool-server -o jsonpath='{.status.discoveredTools[*].name}'
+      - type: McpServer
+        mcpServer:
+          apiGroup: kagent.dev
+          kind: RemoteMCPServer
+          name: kagent-tool-server
+          toolNames:
+            - k8s_get_resources
+            - k8s_get_pod_logs
+            - prometheus_query_tool
+            - prometheus_query_range_tool
+            - prometheus_label_names_tool
+            - prometheus_targets_tool
+            - prometheus_promql_tool

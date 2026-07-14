@@ -1,0 +1,25 @@
+# Prometheus 3 + Grafana 12 + Alertmanager, en un solo chart.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: observability
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 87.3.0      # appVersion v0.92.0 (Prometheus 3.x, Grafana 12.x)
+    helm:
+      releaseName: kube-prometheus-stack   # servicio determinista: kube-prometheus-stack-prometheus.monitoring:9090
+      values: |
+        grafana:
+          defaultDashboardsTimezone: America/Lima
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true    # CRDs grandes -> requiere server-side apply

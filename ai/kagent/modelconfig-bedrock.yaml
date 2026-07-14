@@ -1,0 +1,19 @@
+# El cerebro de producción: Claude vía Amazon Bedrock. Razonamiento más profundo.
+# Camino cloud/grabado — requiere cuenta AWS (la provee el usuario "a su tiempo").
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: bedrock-claude
+  namespace: kagent
+spec:
+  provider: Bedrock                       # enum exacto: Bedrock (NO "AmazonBedrock")
+  model: us.anthropic.claude-sonnet-4-6   # perfil de inferencia US; usa us.anthropic.claude-opus-4-8 para razonamiento más profundo
+  apiKeySecret: bedrock-credentials       # omitir si usas IRSA / IAM role en EKS
+  bedrock:
+    region: us-east-1
+---
+# Secret con credenciales AWS (solo camino access-key; en EKS preferir IRSA).
+# Crear cuando se tenga la cuenta AWS:
+#   kubectl create secret generic bedrock-credentials -n kagent \
+#     --from-literal=AWS_ACCESS_KEY_ID=<key> \
+#     --from-literal=AWS_SECRET_ACCESS_KEY=<secret>

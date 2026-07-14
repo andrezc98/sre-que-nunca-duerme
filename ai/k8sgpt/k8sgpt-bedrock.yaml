@@ -1,0 +1,16 @@
+# K8sGPT con backend Amazon Bedrock (camino cloud). Alternativa a k8sgpt-ollama.yaml
+# (usa una u otra, no ambas). En EKS las credenciales llegan por Pod Identity
+# (ver infra-eks/) -> sin secret. Fuera de EKS, añade spec.ai.secret con
+# AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY.
+apiVersion: core.k8sgpt.ai/v1alpha1
+kind: K8sGPT
+metadata:
+  name: k8sgpt-bedrock
+  namespace: k8sgpt-operator-system
+spec:
+  ai:
+    enabled: true
+    backend: amazonbedrock
+    model: us.anthropic.claude-sonnet-4-6   # perfil de inferencia US; verificar que el backend acepta el id de perfil
+    region: us-east-1
+  noCache: false
