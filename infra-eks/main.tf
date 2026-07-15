@@ -1,35 +1,39 @@
 # EKS mínimo para el camino cloud/grabado. La capa de Kubernetes (gitops/ + ai/)
 # es la MISMA que en local: aquí solo se provisiona el cluster + IAM para Bedrock.
-# Módulos oficiales (ponytail: no hacer VPC/EKS a mano).
+# Corre en una VPC EXISTENTE (var.vpc_id) reutilizando su IGW; lo único de red
+# que se crea son 2 subnets desde un CIDR secundario + 1 route table (gratis).
 
-data "aws_availability_zones" "available" {
-  state = "available"
+# La VPC destino solo tiene subnets en Local Zone (us-east-1-lim-1a) y una /27:
+# EKS exige >=2 AZs ESTÁNDAR, así que estas subnets son obligatorias, no gusto.
+resource "aws_subnet" "demo" {
+  for_each                = var.public_subnets
+  vpc_id                  = var.vpc_id
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az
+  map_public_ip_on_launch = true # egreso directo vía IGW (la VPC no tiene NAT)
 }
 
-locals {
-  cidr = "10.0.0.0/16"
-  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+data "aws_internet_gateway" "existing" {
+  filter {
+    name   = "attachment.vpc-id"
+    values = [var.vpc_id]
+  }
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 6.0"
+# Route table propia: no tocar las route tables del dueño de la VPC.
+resource "aws_route_table" "demo" {
+  vpc_id = var.vpc_id
 
-  name = var.cluster_name
-  cidr = local.cidr
-  azs  = local.azs
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = data.aws_internet_gateway.existing.internet_gateway_id
+  }
+}
 
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.cidr, 4, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.cidr, 8, k + 48)]
-
-  enable_nat_gateway   = true
-  single_nat_gateway   = true # un solo NAT/EIP: mínimo costo y cuota
-  enable_dns_hostnames = true
-
-  public_subnet_tags  = { "kubernetes.io/role/elb" = 1 }
-  private_subnet_tags = { "kubernetes.io/role/internal-elb" = 1 }
-
-  tags = { Environment = "demo" }
+resource "aws_route_table_association" "demo" {
+  for_each       = aws_subnet.demo
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.demo.id
 }
 
 module "eks" {
@@ -58,9 +62,9 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
-  control_plane_subnet_ids = module.vpc.private_subnets
+  vpc_id                   = var.vpc_id
+  subnet_ids               = [for s in aws_subnet.demo : s.id]
+  control_plane_subnet_ids = [for s in aws_subnet.demo : s.id]
 
   eks_managed_node_groups = {
     default = {
@@ -77,8 +81,6 @@ module "eks" {
       desired_size   = 2 # honrado solo al crear; el módulo lo ignora en applies posteriores
     }
   }
-
-  tags = { Environment = "demo" }
 }
 
 output "cluster_name" {
