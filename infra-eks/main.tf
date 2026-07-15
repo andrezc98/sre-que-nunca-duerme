@@ -68,13 +68,13 @@ module "eks" {
 
   eks_managed_node_groups = {
     default = {
-      # Graviton4 + Bottlerocket (OS minimalista para contenedores: boot rápido,
+      # Graviton5 + Bottlerocket (OS minimalista para contenedores: boot rápido,
       # superficie de ataque chica — buen material de charla). Todo el stack ya
       # corrió en arm64 (kind sobre Apple Silicon), así que ARM es riesgo cero.
-      # Bleeding edge: cambia a ["m9g.large"] (Graviton5, GA jun 2026) si el MNG
-      # lo acepta en tu cuenta; m8g es la opción probada. Evita *.medium: en EKS
-      # con VPC CNI los medium Graviton topan ~8 pods/nodo y el stack trae ~45.
-      instance_types = ["m8g.large"]
+      # m9g = GA jun 2026; si el MNG no lo acepta o no hay capacidad, volver a
+      # ["m8g.large"] (probado). Evita *.medium: en EKS con VPC CNI los medium
+      # Graviton topan ~8 pods/nodo y el stack trae ~45.
+      instance_types = ["m9g.large"]
       ami_type       = "BOTTLEROCKET_ARM_64"
       min_size       = 2
       max_size       = 3

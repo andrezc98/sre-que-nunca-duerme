@@ -93,4 +93,17 @@ infra-eks/    OpenTofu para el camino cloud (opcional, grabado)
 - [x] OpenTofu EKS + IAM Bedrock (Pod Identity) — *escrito; apply gated en cuenta AWS*
 - [x] **Probado en kind local end-to-end** (2026-07-14): k8sgpt CLI+operator, agente
   kagent (kubectl + PromQL vía MCP), swap de cerebro, app-of-apps Argo CD.
-- [ ] Camino EKS + Bedrock con cuenta AWS real (gated en el usuario) + grabar el clip.
+- [x] **Probado en EKS end-to-end** (2026-07-14): EKS 1.36 (misma versión que kind),
+  2× m9g.large Graviton5 + Bottlerocket, agente con Claude vía Bedrock (Pod
+  Identity, cero API keys), PromQL en vivo, app-of-apps completo.
+- [ ] Grabar el clip cloud + destruir (`tofu destroy`).
+
+### Deltas EKS vs kind (aprendidos al probar)
+
+1. `gp2` existe pero NO es StorageClass default → los PVC quedan Pending:
+   `kubectl patch storageclass gp2 -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'`
+2. Con Pod Identity, quitar `apiKeySecret` de los ModelConfigs Bedrock:
+   `kubectl -n kagent patch modelconfig bedrock-claude --type json -p '[{"op":"remove","path":"/spec/apiKeySecret"}]'`
+3. Primer paso tras instalar: `./demo/swap-brain.sh bedrock-claude` (no hay Ollama).
+4. Las netpols de Argo CD NO rompen nada en EKS (VPC CNI no las aplica por
+   defecto) — el fix de borrarlas es solo para kind >= 0.32.
