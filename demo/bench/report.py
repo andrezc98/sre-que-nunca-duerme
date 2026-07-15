@@ -10,10 +10,12 @@ from collections import defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).parent
-PALETTE = ["#3987e5", "#199e70", "#c98500", "#008300", "#9085e9", "#e66767"]  # validado (dark)
-ORDER = ["ollama-qwen", "qwen36-27b", "glm-cloud", "bedrock-claude", "bedrock-sonnet-5", "bedrock-opus"]
+PALETTE = ["#3987e5", "#199e70", "#c98500", "#008300", "#9085e9", "#e66767", "#d55181", "#d95926"]  # ref dark, orden validado
+ORDER = ["ollama-qwen", "qwen36-27b", "glm-cloud", "minimax-cloud", "kimi-cloud",
+         "bedrock-claude", "bedrock-sonnet-5", "bedrock-opus"]
 LABEL = {"ollama-qwen": "Qwen 3.5 4B · local", "qwen36-27b": "Qwen 3.6 27B · local",
-         "glm-cloud": "GLM 5.2 · Ollama Cloud",
+         "glm-cloud": "GLM 5.2 · Ollama Cloud", "minimax-cloud": "MiniMax M3 · Ollama Cloud",
+         "kimi-cloud": "Kimi K2.7 code · Ollama Cloud",
          "bedrock-claude": "Claude Sonnet 4.6 · Bedrock", "bedrock-sonnet-5": "Claude Sonnet 5 · Bedrock",
          "bedrock-opus": "Claude Opus 4.8 · Bedrock"}
 SCEN_TITLE = {"imagepull": "Imagen inexistente", "crashloop": "CrashLoopBackOff",

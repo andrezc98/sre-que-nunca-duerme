@@ -1,0 +1,43 @@
+# Tercer nivel del benchmark: OSS frontera hosteado en Ollama Cloud.
+# Entra por el endpoint OpenAI-compatible (https://ollama.com/v1) con bearer key.
+# El secret NO se comitea; crearlo con tu key:
+#   kubectl -n kagent create secret generic ollama-cloud-key \
+#     --from-literal=OPENAI_API_KEY=<tu ollama cloud api key>
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: glm-cloud
+  namespace: kagent
+spec:
+  provider: OpenAI
+  model: glm-5.2
+  apiKeySecret: ollama-cloud-key
+  apiKeySecretKey: OPENAI_API_KEY
+  openAI:
+    baseUrl: https://ollama.com/v1
+---
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: minimax-cloud
+  namespace: kagent
+spec:
+  provider: OpenAI
+  model: minimax-m3
+  apiKeySecret: ollama-cloud-key
+  apiKeySecretKey: OPENAI_API_KEY
+  openAI:
+    baseUrl: https://ollama.com/v1
+---
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: kimi-cloud
+  namespace: kagent
+spec:
+  provider: OpenAI
+  model: kimi-k2.7-code
+  apiKeySecret: ollama-cloud-key
+  apiKeySecretKey: OPENAI_API_KEY
+  openAI:
+    baseUrl: https://ollama.com/v1

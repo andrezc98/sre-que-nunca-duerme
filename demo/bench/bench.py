@@ -26,7 +26,9 @@ HERE = Path(__file__).parent
 BRAINS = {
     "ollama-qwen":      ("kind-kcd", "http://localhost:8083"),
     "qwen36-27b":       ("kind-kcd", "http://localhost:8083"),
-    "glm-cloud":        ("kind-kcd", "http://localhost:8083"),  # ollama cloud (wire mañana)
+    "glm-cloud":        ("kind-kcd", "http://localhost:8083"),
+    "minimax-cloud":    ("kind-kcd", "http://localhost:8083"),
+    "kimi-cloud":       ("kind-kcd", "http://localhost:8083"),
     "bedrock-claude":   ("eks-demo", "http://localhost:8084"),
     "bedrock-sonnet-5": ("eks-demo", "http://localhost:8084"),
     "bedrock-opus":     ("eks-demo", "http://localhost:8084"),
@@ -36,7 +38,9 @@ BRAINS = {
 PRICES = {
     "ollama-qwen": (0.0, 0.0),
     "qwen36-27b": (0.0, 0.0),
-    "glm-cloud": (0.0, 0.0),
+    "glm-cloud": (0.0, 0.0),      # ollama cloud: plan flat, no por token
+    "minimax-cloud": (0.0, 0.0),
+    "kimi-cloud": (0.0, 0.0),
     "bedrock-claude": (3.0, 15.0),
     "bedrock-sonnet-5": (3.0, 15.0),
     "bedrock-opus": (5.0, 25.0),
