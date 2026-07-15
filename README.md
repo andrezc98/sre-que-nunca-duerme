@@ -80,8 +80,19 @@ kubectl apply -f ai/k8sgpt/k8sgpt-ollama.yaml   # tras el operator Synced
 ```
 gitops/       Argo CD app-of-apps (observabilidad + IA)
 ai/           manifests de K8sGPT y Kagent + el swap de modelo
-demo/         scripts: romper pod, swap de cerebro
+demo/         scripts: romper pod, swap de cerebro, panel dual
 infra-eks/    OpenTofu para el camino cloud (opcional, grabado)
+```
+
+## Panel dual (la misma pregunta a ambos clusters)
+
+Una página que manda la misma pregunta al sre-agent de kind Y de EKS en
+paralelo, con respuestas, herramientas usadas y tiempos lado a lado:
+
+```bash
+kubectl --context kind-kcd  -n kagent port-forward svc/kagent-controller 8083:8083 &
+kubectl --context eks-demo -n kagent port-forward svc/kagent-controller 8084:8083 &
+python3 demo/panel.py     # -> http://localhost:7777  (stdlib puro, cero deps)
 ```
 
 ## Estado del build
