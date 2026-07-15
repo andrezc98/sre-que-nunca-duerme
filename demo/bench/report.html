@@ -1,0 +1,74 @@
+<!doctype html><html lang=es><head><meta charset=utf-8>
+<title>¿Cuánto modelo necesita un SRE?</title><style>
+ body{font-family:ui-monospace,Menlo,monospace;background:#1a1a19;color:#fff;margin:0;padding:2rem;max-width:70rem;margin-inline:auto}
+ h1{font-size:1.3rem} h1 em{color:#c3c2b7;font-style:normal;font-size:.85rem;display:block;margin-top:.3rem}
+ h2{font-size:1rem;color:#c3c2b7;margin:1.6rem 0 .6rem;border-top:1px solid #333;padding-top:1rem}
+ .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.8rem;margin:1.2rem 0}
+ .tile{background:#222220;border:1px solid #333;border-radius:8px;padding:1rem;position:relative}
+ .dot{width:10px;height:10px;border-radius:50%;position:absolute;top:1rem;right:1rem}
+ .tname{font-size:.75rem;color:#c3c2b7;min-height:2.2em} .big{font-size:2.3rem;font-weight:700;line-height:1.1}
+ .sub{font-size:.75rem;color:#c3c2b7} .sub2{font-size:.72rem;color:#8b8a82;margin-top:.4rem}
+ .lane{display:grid;grid-template-columns:13rem 1fr;gap:.6rem;align-items:center;margin:.45rem 0}
+ .lname{font-size:.78rem;color:#fff;text-align:right}
+ .track{position:relative} .bar{height:14px;border-radius:0 4px 4px 0;position:relative;min-width:8px}
+ .step{position:absolute;top:50%;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid #1a1a19}
+ .lmeta{grid-column:2;font-size:.72rem;color:#c3c2b7;margin-top:-2px}
+ .badge{color:#fff} details{margin-top:2rem;font-size:.78rem} summary{cursor:pointer;color:#c3c2b7}
+ table{border-collapse:collapse;margin-top:.8rem;width:100%} td,th{border:1px solid #333;padding:.3rem .5rem;text-align:left;vertical-align:top}
+ .ans{max-width:28rem;color:#c3c2b7}
+</style></head><body>
+<h1>🤖 ¿Cuánto modelo necesita un SRE?<em>mismo agente (kagent CRD) · mismas herramientas MCP · 1 incidentes reales · barra = latencia · puntos = tool calls</em></h1>
+<div class=tiles><div class=tile><div class=dot style="background:#3987e5"></div>
+<div class=tname>Qwen 3.5 4B · local</div>
+<div class=big>100%</div><div class=sub>aciertos (1/1)</div>
+<div class=sub2>$0 por diagnóstico correcto · 26s prom.</div></div><div class=tile><div class=dot style="background:#c98500"></div>
+<div class=tname>Claude Sonnet 4.6 · Bedrock</div>
+<div class=big>100%</div><div class=sub>aciertos (1/1)</div>
+<div class=sub2>$0.0282 por diagnóstico correcto · 15s prom.</div></div></div>
+<h2>Imagen inexistente</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+<div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_resources" style="left:12%"></span><span class=step title="k8s_get_pod_logs" style="left:25%"></span><span class=step title="k8s_get_resources" style="left:38%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:62%"></span><span class=step title="k8s_get_resources" style="left:75%"></span><span class=step title="k8s_get_resources" style="left:88%"></span></div></div>
+<div class=lmeta>26s · 7 pasos · 19739 tok · $0.0000
+ <span class=badge>✅ Correcto</span> · 🔁2</div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
+<div class=track><div class=bar style="width:60%;background:#c98500"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
+<div class=lmeta>15s · 2 pasos · 6319 tok · $0.0282
+ <span class=badge>✅ Correcto</span> · 🔁1</div></div>
+<details><summary>datos y respuestas completas (revisión)</summary><table><tr><th>escenario</th><th>cerebro</th><th>veredicto</th><th>s</th><th>pasos</th><th>tok in/out</th><th>$</th><th>respuesta</th></tr><tr><td>imagepull</td><td>bedrock-claude</td><td>correcto</td><td>15.3</td><td>2</td><td>5551/768</td><td>0.0282</td><td class=ans>## 🔍 Diagnóstico — Causa Raíz Identificada
+
+### ❌ Problema: `ErrImagePull` — Imagen inexistente
+
+```
+docker.io/library/nginx:noexiste → NOT FOUND
+```
+
+El pod está en estado **`Pending`** / `waiting: ErrImagePull` porque la imagen especificada **`nginx:noexiste`** no existe en Docker Hub. El tag `noexiste` nunca ha existido. No hay logs porque el contenedor **jamás llegó a arrancar**.
+
+---
+
+### 🛠️ Fix concreto
+
+Corregir el tag de la imagen a uno válido (p. ej. `nginx:stable` o `nginx:latest`):
+
+```bash
+kubectl patch pod roto-imagen -n bench \
+  --type=&#x27;json&#x27; \
+  -p=&#x27;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;</td></tr><tr><td>imagepull</td><td>ollama-qwen</td><td>correcto</td><td>25.7</td><td>7</td><td>18522/1217</td><td>0.0000</td><td class=ans>Causa raíz confirmada. Tengo toda la información necesaria.
+
+---
+
+## 🔴 Causa Raíz: Imagen inexistente (`ImagePullBackOff`)
+
+### Diagnóstico
+
+| Campo | Valor |
+|---|---|
+| **Pod** | `roto-imagen` / namespace `bench` |
+| **Estado** | `ImagePullBackOff` |
+| **Imagen configurada** | `nginx:noexiste` |
+| **Error exacto** | `docker.io/library/nginx:noexiste: not found` |
+
+El pod **nunca arrancó**. El kubelet intentó descargar la imagen `nginx:noexiste` **3 veces**, falló todas (`ErrImagePull`) y entró en backoff exponencial. No hay logs del contenedor porque nunca llegó a ejecutarse.
+
+---
+
+## ✅ Fix </td></tr></table></details>
+</body></html>
