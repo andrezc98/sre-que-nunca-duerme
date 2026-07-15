@@ -31,6 +31,21 @@ SCEN_DESC = {
 }
 BADGE = {"correcto": ("✅", "Correcto"), "parcial": ("⚠️", "Parcial"),
          "fallo": ("❌", "Falló"), "alucino": ("👻", "Alucinó"), "error": ("💥", "Error")}
+LOCAL = {"ollama-qwen", "qwen36-27b"}
+# USD por millón de tokens (in, out) — precio API OFICIAL de cada proveedor
+# (jul-2026): Z.ai GLM-5.2 1.40/4.40 · Moonshot Kimi K2.7-code 0.95/4.00 ·
+# MiniMax M3 0.30/1.20 (promo permanente) · Bedrock Claude según AWS.
+# El costo se calcula al renderizar (tokens × precio), no del jsonl.
+PRICES = {
+    "ollama-qwen": (0.0, 0.0), "qwen36-27b": (0.0, 0.0),
+    "glm-cloud": (1.40, 4.40), "kimi-cloud": (0.95, 4.00), "minimax-cloud": (0.30, 1.20),
+    "bedrock-claude": (3.0, 15.0), "bedrock-sonnet-5": (3.0, 15.0), "bedrock-opus": (5.0, 25.0),
+}
+
+
+def cost_of(r):
+    pin, pout = PRICES.get(r["brain"], (0.0, 0.0))
+    return r["tokens_in"] / 1e6 * pin + r["tokens_out"] / 1e6 * pout
 
 
 def load():
@@ -69,7 +84,7 @@ def main():
         s = per_brain[r["brain"]]
         s["n"] += 1
         s["ok"] += (v == "correcto" and not hall)
-        s["cost"] += r["cost_usd"]
+        s["cost"] += cost_of(r)
         s["secs"] += r["seconds"]
 
     tiles = ""
@@ -98,7 +113,7 @@ def main():
                 for i, t in enumerate(r["tools"]))
             lanes += f"""<div class=lane><div class=lname>{html.escape(LABEL.get(r['brain'], r['brain']))}</div>
 <div class=track><div class=bar style="width:{w:.0f}%;background:{color[r['brain']]}">{dots}</div></div>
-<div class=lmeta>{r['seconds']:.0f}s · {r['steps']} pasos · {r['tokens_in'] + r['tokens_out']} tok · ${r['cost_usd']:.4f}
+<div class=lmeta>{r['seconds']:.0f}s · {r['steps']} pasos · {r['tokens_in'] + r['tokens_out']} tok · ${cost_of(r):.4f}
  <span class=badge>{icon} {word}</span>{' · 🔁' + str(r['tool_errors']) if r['tool_errors'] else ''}</div></div>"""
         desc = SCEN_DESC.get(sc, "")
         sections += (f"<h2>{html.escape(SCEN_TITLE.get(sc, sc))}</h2>"
@@ -108,7 +123,7 @@ def main():
     for (sc, b), r in sorted(rows.items()):
         v, hall = verdict_of(r, verdicts)
         table += (f"<tr><td>{sc}</td><td>{b}</td><td>{'👻' if hall else ''}{v}</td><td>{r['seconds']}</td>"
-                  f"<td>{r['steps']}</td><td>{r['tokens_in']}/{r['tokens_out']}</td><td>{r['cost_usd']:.4f}</td>"
+                  f"<td>{r['steps']}</td><td>{r['tokens_in']}/{r['tokens_out']}</td><td>{cost_of(r):.4f}</td>"
                   f"<td class=ans>{html.escape((r.get('answer') or r.get('error') or '')[:600])}</td></tr>")
     table += "</table></details>"
 
@@ -132,7 +147,7 @@ def main():
  table{{border-collapse:collapse;margin-top:.8rem;width:100%}} td,th{{border:1px solid #333;padding:.3rem .5rem;text-align:left;vertical-align:top}}
  .ans{{max-width:28rem;color:#c3c2b7}}
 </style></head><body>
-<h1>🤖 ¿Cuánto modelo necesita un SRE?<em>mismo agente (kagent CRD) · mismas herramientas MCP · {len(scenarios)} incidentes reales · barra = latencia · puntos = tool calls</em></h1>
+<h1>🤖 ¿Cuánto modelo necesita un SRE?<em>mismo agente (kagent CRD) · mismas herramientas MCP · {len(scenarios)} incidentes reales · barra = latencia · puntos = tool calls<br>costo = tokens × precio API oficial de cada proveedor (Z.ai / Moonshot / MiniMax / AWS Bedrock, jul-2026); los OSS corrieron vía Ollama Cloud (plan flat) y los locales en la laptop ($0)</em></h1>
 <div class=tiles>{tiles}</div>
 {sections}
 {table}

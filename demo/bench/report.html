@@ -18,7 +18,7 @@
  table{border-collapse:collapse;margin-top:.8rem;width:100%} td,th{border:1px solid #333;padding:.3rem .5rem;text-align:left;vertical-align:top}
  .ans{max-width:28rem;color:#c3c2b7}
 </style></head><body>
-<h1>🤖 ¿Cuánto modelo necesita un SRE?<em>mismo agente (kagent CRD) · mismas herramientas MCP · 6 incidentes reales · barra = latencia · puntos = tool calls</em></h1>
+<h1>🤖 ¿Cuánto modelo necesita un SRE?<em>mismo agente (kagent CRD) · mismas herramientas MCP · 6 incidentes reales · barra = latencia · puntos = tool calls<br>costo = tokens × precio API oficial de cada proveedor (Z.ai / Moonshot / MiniMax / AWS Bedrock, jul-2026); los OSS corrieron vía Ollama Cloud (plan flat) y los locales en la laptop ($0)</em></h1>
 <div class=tiles><div class=tile><div class=dot style="background:#3987e5"></div>
 <div class=tname>Qwen 3.5 4B · local</div>
 <div class=big>50%</div><div class=sub>aciertos (3/6)</div>
@@ -28,13 +28,13 @@
 <div class=sub2>$0 por diagnóstico correcto · 22s prom.</div></div><div class=tile><div class=dot style="background:#c98500"></div>
 <div class=tname>GLM 5.2 · Ollama Cloud</div>
 <div class=big>100%</div><div class=sub>aciertos (6/6)</div>
-<div class=sub2>$0 por diagnóstico correcto · 10s prom.</div></div><div class=tile><div class=dot style="background:#008300"></div>
+<div class=sub2>$0.0133 por diagnóstico correcto · 10s prom.</div></div><div class=tile><div class=dot style="background:#008300"></div>
 <div class=tname>MiniMax M3 · Ollama Cloud</div>
 <div class=big>83%</div><div class=sub>aciertos (5/6)</div>
-<div class=sub2>$0 por diagnóstico correcto · 49s prom.</div></div><div class=tile><div class=dot style="background:#9085e9"></div>
+<div class=sub2>$0.0158 por diagnóstico correcto · 49s prom.</div></div><div class=tile><div class=dot style="background:#9085e9"></div>
 <div class=tname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=big>100%</div><div class=sub>aciertos (6/6)</div>
-<div class=sub2>$0 por diagnóstico correcto · 7s prom.</div></div><div class=tile><div class=dot style="background:#e66767"></div>
+<div class=sub2>$0.0138 por diagnóstico correcto · 7s prom.</div></div><div class=tile><div class=dot style="background:#e66767"></div>
 <div class=tname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=big>100%</div><div class=sub>aciertos (6/6)</div>
 <div class=sub2>$0.0304 por diagnóstico correcto · 14s prom.</div></div><div class=tile><div class=dot style="background:#d55181"></div>
@@ -52,13 +52,13 @@
 <div class=lmeta>22s · 7 pasos · 19697 tok · $0.0000
  <span class=badge>✅ Correcto</span> · 🔁2</div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:14%;background:#c98500"><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_pod_logs" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
-<div class=lmeta>8s · 3 pasos · 5443 tok · $0.0000
+<div class=lmeta>8s · 3 pasos · 5443 tok · $0.0089
  <span class=badge>✅ Correcto</span> · 🔁1</div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:100%;background:#008300"><span class=step title="k8s_get_pod_logs" style="left:5%"></span><span class=step title="k8s_get_pod_logs" style="left:11%"></span><span class=step title="k8s_get_resources" style="left:16%"></span><span class=step title="k8s_get_pod_logs" style="left:21%"></span><span class=step title="k8s_get_pod_logs" style="left:26%"></span><span class=step title="k8s_get_pod_logs" style="left:32%"></span><span class=step title="k8s_get_pod_logs" style="left:37%"></span><span class=step title="k8s_get_pod_logs" style="left:42%"></span><span class=step title="k8s_get_resources" style="left:47%"></span><span class=step title="k8s_get_pod_logs" style="left:53%"></span><span class=step title="k8s_get_pod_logs" style="left:58%"></span><span class=step title="k8s_get_resources" style="left:63%"></span><span class=step title="k8s_get_pod_logs" style="left:68%"></span><span class=step title="k8s_get_pod_logs" style="left:74%"></span><span class=step title="k8s_get_pod_logs" style="left:79%"></span><span class=step title="k8s_get_resources" style="left:84%"></span><span class=step title="k8s_get_pod_logs" style="left:89%"></span><span class=step title="k8s_get_resources" style="left:95%"></span></div></div>
-<div class=lmeta>57s · 18 pasos · 39142 tok · $0.0000
+<div class=lmeta>57s · 18 pasos · 39142 tok · $0.0139
  <span class=badge>✅ Correcto</span> · 🔁16</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:7%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:50%"></span></div></div>
-<div class=lmeta>4s · 1 pasos · 2745 tok · $0.0000
+<div class=lmeta>4s · 1 pasos · 2745 tok · $0.0032
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:22%;background:#e66767"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>13s · 2 pasos · 6243 tok · $0.0271
@@ -73,13 +73,13 @@
 <div class=lmeta>102s · 3 pasos · 9416 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:9%;background:#c98500"><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_pod_logs" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
-<div class=lmeta>9s · 3 pasos · 6053 tok · $0.0000
+<div class=lmeta>9s · 3 pasos · 6053 tok · $0.0107
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:27%;background:#008300"><span class=step title="k8s_get_resources" style="left:14%"></span><span class=step title="k8s_get_resources" style="left:29%"></span><span class=step title="k8s_get_pod_logs" style="left:43%"></span><span class=step title="k8s_get_pod_logs" style="left:57%"></span><span class=step title="k8s_get_resources" style="left:71%"></span><span class=step title="k8s_get_resources" style="left:86%"></span></div></div>
-<div class=lmeta>28s · 6 pasos · 72938 tok · $0.0000
+<div class=lmeta>28s · 6 pasos · 72938 tok · $0.0228
  <span class=badge>✅ Correcto</span> · 🔁2</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:8%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:17%"></span><span class=step title="k8s_get_pod_logs" style="left:33%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:67%"></span><span class=step title="k8s_get_resources" style="left:83%"></span></div></div>
-<div class=lmeta>8s · 5 pasos · 5573 tok · $0.0000
+<div class=lmeta>8s · 5 pasos · 5573 tok · $0.0070
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:13%;background:#e66767"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>14s · 2 pasos · 6086 tok · $0.0269
@@ -88,19 +88,19 @@
 <div class=lmeta>13s · 2 pasos · 7909 tok · $0.0339
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:16%;background:#d95926"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
-<div class=lmeta>17s · 2 pasos · 12834 tok · $0.0862
+<div class=lmeta>17s · 2 pasos · 12834 tok · $0.0863
  <span class=badge>✅ Correcto</span></div></div><h2>OOMKilled</h2><p class=sdesc>Proceso Python que acumula memoria sin freno dentro de un límite de 64Mi → OOMKilled (exit 137).</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_pod_logs" style="left:20%"></span><span class=step title="k8s_get_resources" style="left:40%"></span><span class=step title="k8s_get_resources" style="left:60%"></span><span class=step title="k8s_get_resources" style="left:80%"></span></div></div>
 <div class=lmeta>123s · 4 pasos · 10165 tok · $0.0000
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:7%;background:#c98500"><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_pod_logs" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
-<div class=lmeta>8s · 3 pasos · 5919 tok · $0.0000
+<div class=lmeta>8s · 3 pasos · 5919 tok · $0.0098
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:49%;background:#008300"><span class=step title="k8s_get_resources" style="left:8%"></span><span class=step title="k8s_get_resources" style="left:15%"></span><span class=step title="k8s_get_resources" style="left:23%"></span><span class=step title="k8s_get_resources" style="left:31%"></span><span class=step title="k8s_get_pod_logs" style="left:38%"></span><span class=step title="k8s_get_pod_logs" style="left:46%"></span><span class=step title="k8s_get_resources" style="left:54%"></span><span class=step title="k8s_get_resources" style="left:62%"></span><span class=step title="k8s_get_resources" style="left:69%"></span><span class=step title="k8s_get_resources" style="left:77%"></span><span class=step title="ask_user" style="left:85%"></span><span class=step title="adk_request_confirmation" style="left:92%"></span></div></div>
-<div class=lmeta>60s · 12 pasos · 22640 tok · $0.0000
+<div class=lmeta>60s · 12 pasos · 22640 tok · $0.0082
  <span class=badge>❌ Falló</span> · 🔁6</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
-<div class=lmeta>7s · 2 pasos · 3390 tok · $0.0000
+<div class=lmeta>7s · 2 pasos · 3390 tok · $0.0043
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:15%;background:#e66767"><span class=step title="k8s_get_resources" style="left:20%"></span><span class=step title="k8s_get_pod_logs" style="left:40%"></span><span class=step title="prometheus_query_tool" style="left:60%"></span><span class=step title="prometheus_query_tool" style="left:80%"></span></div></div>
 <div class=lmeta>19s · 4 pasos · 13401 tok · $0.0520
@@ -115,13 +115,13 @@
 <div class=lmeta>360s · 0 pasos · 0 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#c98500"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
-<div class=lmeta>16s · 2 pasos · 3897 tok · $0.0000
+<div class=lmeta>16s · 2 pasos · 3897 tok · $0.0067
  <span class=badge>✅ Correcto</span> · 🔁1</div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:12%;background:#008300"><span class=step title="k8s_get_resources" style="left:6%"></span><span class=step title="k8s_get_resources" style="left:12%"></span><span class=step title="k8s_get_pod_logs" style="left:18%"></span><span class=step title="k8s_get_pod_logs" style="left:24%"></span><span class=step title="prometheus_promql_tool" style="left:29%"></span><span class=step title="k8s_get_pod_logs" style="left:35%"></span><span class=step title="k8s_get_pod_logs" style="left:41%"></span><span class=step title="k8s_get_pod_logs" style="left:47%"></span><span class=step title="k8s_get_resources" style="left:53%"></span><span class=step title="k8s_get_resources" style="left:59%"></span><span class=step title="k8s_get_pod_logs" style="left:65%"></span><span class=step title="k8s_get_resources" style="left:71%"></span><span class=step title="k8s_get_resources" style="left:76%"></span><span class=step title="k8s_get_resources" style="left:82%"></span><span class=step title="k8s_get_resources" style="left:88%"></span><span class=step title="k8s_get_resources" style="left:94%"></span></div></div>
-<div class=lmeta>44s · 16 pasos · 35861 tok · $0.0000
+<div class=lmeta>44s · 16 pasos · 35861 tok · $0.0125
  <span class=badge>✅ Correcto</span> · 🔁13</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:50%"></span></div></div>
-<div class=lmeta>5s · 1 pasos · 2820 tok · $0.0000
+<div class=lmeta>5s · 1 pasos · 2820 tok · $0.0036
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:6%;background:#e66767"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>14s · 2 pasos · 5718 tok · $0.0255
@@ -136,13 +136,13 @@
 <div class=lmeta>228s · 3 pasos · 10851 tok · $0.0000
  <span class=badge>✅ Correcto</span> · 🔁1</div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#c98500"><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_pod_logs" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
-<div class=lmeta>9s · 3 pasos · 7332 tok · $0.0000
+<div class=lmeta>9s · 3 pasos · 7332 tok · $0.0123
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:25%;background:#008300"><span class=step title="k8s_get_pod_logs" style="left:6%"></span><span class=step title="k8s_get_pod_logs" style="left:12%"></span><span class=step title="k8s_get_resources" style="left:18%"></span><span class=step title="k8s_get_pod_logs" style="left:24%"></span><span class=step title="k8s_get_pod_logs" style="left:29%"></span><span class=step title="k8s_get_pod_logs" style="left:35%"></span><span class=step title="k8s_get_pod_logs" style="left:41%"></span><span class=step title="k8s_get_pod_logs" style="left:47%"></span><span class=step title="k8s_get_pod_logs" style="left:53%"></span><span class=step title="k8s_get_resources" style="left:59%"></span><span class=step title="k8s_get_pod_logs" style="left:65%"></span><span class=step title="k8s_get_resources" style="left:71%"></span><span class=step title="k8s_get_resources" style="left:76%"></span><span class=step title="k8s_get_resources" style="left:82%"></span><span class=step title="k8s_get_resources" style="left:88%"></span><span class=step title="k8s_get_pod_logs" style="left:94%"></span></div></div>
-<div class=lmeta>57s · 16 pasos · 37179 tok · $0.0000
+<div class=lmeta>57s · 16 pasos · 37179 tok · $0.0131
  <span class=badge>✅ Correcto</span> · 🔁13</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:20%"></span><span class=step title="k8s_get_resources" style="left:40%"></span><span class=step title="k8s_get_resources" style="left:60%"></span><span class=step title="k8s_get_pod_logs" style="left:80%"></span></div></div>
-<div class=lmeta>11s · 4 pasos · 31417 tok · $0.0000
+<div class=lmeta>11s · 4 pasos · 31417 tok · $0.0312
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:6%;background:#e66767"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>11s · 2 pasos · 6358 tok · $0.0268
@@ -157,13 +157,13 @@
 <div class=lmeta>226s · 0 pasos · 0 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#c98500"><span class=step title="k8s_get_resources" style="left:20%"></span><span class=step title="k8s_get_resources" style="left:40%"></span><span class=step title="k8s_get_resources" style="left:60%"></span><span class=step title="k8s_get_resources" style="left:80%"></span></div></div>
-<div class=lmeta>11s · 4 pasos · 21076 tok · $0.0000
+<div class=lmeta>11s · 4 pasos · 21076 tok · $0.0316
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>MiniMax M3 · Ollama Cloud</div>
 <div class=track><div class=bar style="width:21%;background:#008300"><span class=step title="k8s_get_resources" style="left:8%"></span><span class=step title="k8s_get_resources" style="left:17%"></span><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_resources" style="left:42%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:58%"></span><span class=step title="k8s_get_resources" style="left:67%"></span><span class=step title="k8s_get_resources" style="left:75%"></span><span class=step title="k8s_get_resources" style="left:83%"></span><span class=step title="k8s_get_resources" style="left:92%"></span></div></div>
-<div class=lmeta>47s · 11 pasos · 24482 tok · $0.0000
+<div class=lmeta>47s · 11 pasos · 24482 tok · $0.0087
  <span class=badge>✅ Correcto</span> · 🔁5</div></div><div class=lane><div class=lname>Kimi K2.7 code · Ollama Cloud</div>
 <div class=track><div class=bar style="width:6%;background:#9085e9"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_resources" style="left:67%"></span></div></div>
-<div class=lmeta>9s · 2 pasos · 33428 tok · $0.0000
+<div class=lmeta>9s · 2 pasos · 33428 tok · $0.0335
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=track><div class=bar style="width:6%;background:#e66767"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_resources" style="left:67%"></span></div></div>
 <div class=lmeta>13s · 2 pasos · 5359 tok · $0.0239
@@ -218,7 +218,7 @@ El pod `roto-config` está atascado en estado **`Pending` / `CreateContainerConf
 ```
 kubectl create configmap config-inexistente -n bench --from-literal=KEY=VALUE
 ```
-2. O corregir el manifiesto del pod para apuntar al ConfigMap correc</td></tr><tr><td>badconfig</td><td>glm-cloud</td><td>correcto</td><td>15.9</td><td>2</td><td>3491/406</td><td>0.0000</td><td class=ans>## Diagnóstico
+2. O corregir el manifiesto del pod para apuntar al ConfigMap correc</td></tr><tr><td>badconfig</td><td>glm-cloud</td><td>correcto</td><td>15.9</td><td>2</td><td>3491/406</td><td>0.0067</td><td class=ans>## Diagnóstico
 
 **Causa raíz exacta:** El contenedor `c` del pod está en estado `CreateContainerConfigError` porque referencia un ConfigMap inexistente:
 
@@ -238,7 +238,7 @@ Kubernetes no puede crear el contenedor porque no encuentra el ConfigMap del que
 **Opción A — Crear el ConfigMap faltante** (si debería existir):
 
 ```bash
-kubectl create configmap config-inexistente -</td></tr><tr><td>badconfig</td><td>kimi-cloud</td><td>correcto</td><td>4.9</td><td>1</td><td>2528/292</td><td>0.0000</td><td class=ans>**Causa raíz:** El Pod hace referencia a un ConfigMap que no existe:
+kubectl create configmap config-inexistente -</td></tr><tr><td>badconfig</td><td>kimi-cloud</td><td>correcto</td><td>4.9</td><td>1</td><td>2528/292</td><td>0.0036</td><td class=ans>**Causa raíz:** El Pod hace referencia a un ConfigMap que no existe:
 
 ```yaml
 envFrom:
@@ -262,7 +262,7 @@ data:
   KEY: valor
 ```
 
-¿Creo el ConfigM</td></tr><tr><td>badconfig</td><td>minimax-cloud</td><td>correcto</td><td>43.5</td><td>16</td><td>33929/1932</td><td>0.0000</td><td class=ans>Causa raíz identificada.
+¿Creo el ConfigM</td></tr><tr><td>badconfig</td><td>minimax-cloud</td><td>correcto</td><td>43.5</td><td>16</td><td>33929/1932</td><td>0.0125</td><td class=ans>Causa raíz identificada.
 
 ## Diagnóstico
 
@@ -289,7 +289,7 @@ sh -c &#x27;echo arrancando; sleep 2; echo ERROR fatal: config invalida; exit 1&
 #                                              Salida con código de error siempre
 ```
 
-El contenedor arranca, imprime el error y termina con `exitCode: 1` (ya lleva **3 reinicios**). Como `restartP</td></tr><tr><td>crashloop</td><td>bedrock-opus</td><td>correcto</td><td>16.7</td><td>2</td><td>11730/1104</td><td>0.0862</td><td class=ans>## Diagnóstico: `roto-crash` en `bench`
+El contenedor arranca, imprime el error y termina con `exitCode: 1` (ya lleva **3 reinicios**). Como `restartP</td></tr><tr><td>crashloop</td><td>bedrock-opus</td><td>correcto</td><td>16.7</td><td>2</td><td>11730/1104</td><td>0.0863</td><td class=ans>## Diagnóstico: `roto-crash` en `bench`
 
 **Estado:** `CrashLoopBackOff` — `restartCount: 3`, `state.terminated` con `reason: Error`, `exitCode: 1`.
 
@@ -316,7 +316,7 @@ ERROR fatal: config invalida
 ```
 Y termina con `exitCode: 1`, `reason: Error`. Kubernetes reinicia el contenedor por `restartPolicy: Always`, entrando en loop de crash cada vez que el script llega al `exit 1`.
 
-No hay problema de scheduling, imagen, recursos ni red — es </td></tr><tr><td>crashloop</td><td>glm-cloud</td><td>correcto</td><td>9.3</td><td>3</td><td>5307/746</td><td>0.0000</td><td class=ans>## Diagnóstico: Causa Raíz
+No hay problema de scheduling, imagen, recursos ni red — es </td></tr><tr><td>crashloop</td><td>glm-cloud</td><td>correcto</td><td>9.3</td><td>3</td><td>5307/746</td><td>0.0107</td><td class=ans>## Diagnóstico: Causa Raíz
 
 El pod `roto-crash` es un **Pod standalone** (no gestionado por un Deployment) en el namespace `bench`. Su único contenedor (`c`, imagen `busybox:1.36`) ejecuta este comando:
 
@@ -326,7 +326,7 @@ echo arrancando; sleep 2; echo ERROR fatal: config invalida; exit 1
 
 **El comando termina siempre con `exit 1`** — el contenedor sale con código 1 deliberadamente en cada ejecución. Como el `restartPolicy` es `Always`, Kubernetes lo reinicia en bucle (ya van 3 reinicios en ~80s), pero el resultado es siempre el mismo: **crash loop por diseño del comando**.
 
-No hay problema de imagen,</td></tr><tr><td>crashloop</td><td>kimi-cloud</td><td>correcto</td><td>7.9</td><td>5</td><td>5023/550</td><td>0.0000</td><td class=ans>**Diagnóstico:**
+No hay problema de imagen,</td></tr><tr><td>crashloop</td><td>kimi-cloud</td><td>correcto</td><td>7.9</td><td>5</td><td>5023/550</td><td>0.0070</td><td class=ans>**Diagnóstico:**
 
 El pod `roto-crash` **no lee ninguna configuración externa**.  
 El `command` del contenedor está hardcodeado a propósito para fallar:
@@ -345,7 +345,7 @@ No hay env vars, volumen de config ni secret. El mensaje &quot;ERROR fatal: conf
 Corregir/reemplazar el Pod con un `command` válido o eliminar el `echo`+`exit 1` artificial. Ejemplo mínimo:
 
 ```yaml
-apiV</td></tr><tr><td>crashloop</td><td>minimax-cloud</td><td>correcto</td><td>27.8</td><td>6</td><td>71965/973</td><td>0.0000</td><td class=ans>## 🔴 Diagnóstico: `roto-crash` (ns: `bench`)
+apiV</td></tr><tr><td>crashloop</td><td>minimax-cloud</td><td>correcto</td><td>27.8</td><td>6</td><td>71965/973</td><td>0.0228</td><td class=ans>## 🔴 Diagnóstico: `roto-crash` (ns: `bench`)
 
 **Causa raíz (exacta):** El pod **NO está roto por infraestructura**. Está diseñado a propósito para fallar. El `command` del contenedor ejecuta un script de busybox que imprime `arrancando`, espera 2s, imprime `ERROR fatal: config invalida` y termina con `exit 1`:
 
@@ -405,7 +405,7 @@ No es un problema de red, credenciales de registro ni del nodo (`ip-10-222-10-12
 
 ## Fix concreto
 
-Corregir el tag de la </td></tr><tr><td>imagepull</td><td>glm-cloud</td><td>correcto</td><td>8.1</td><td>3</td><td>5012/431</td><td>0.0000</td><td class=ans>## Diagnóstico
+Corregir el tag de la </td></tr><tr><td>imagepull</td><td>glm-cloud</td><td>correcto</td><td>8.1</td><td>3</td><td>5012/431</td><td>0.0089</td><td class=ans>## Diagnóstico
 
 **Causa raíz:** El pod usa la imagen `nginx:noexiste`, que **no existe** en Docker Hub.
 
@@ -428,7 +428,7 @@ kubectl -n bench delete pod roto-imagen
 kubectl -n bench run roto-imagen --image=nginx:1.27
 ```
 
-&gt; ⚠️ Como es un pod directo (no un Deplo</td></tr><tr><td>imagepull</td><td>kimi-cloud</td><td>correcto</td><td>4.0</td><td>1</td><td>2549/196</td><td>0.0000</td><td class=ans>**Causa raíz:** La imagen `nginx:noexiste` no existe en Docker Hub. El pod está en `ImagePullBackOff`.
+&gt; ⚠️ Como es un pod directo (no un Deplo</td></tr><tr><td>imagepull</td><td>kimi-cloud</td><td>correcto</td><td>4.0</td><td>1</td><td>2549/196</td><td>0.0032</td><td class=ans>**Causa raíz:** La imagen `nginx:noexiste` no existe en Docker Hub. El pod está en `ImagePullBackOff`.
 
 **Fix concreto:** Actualizar la imagen a un tag válido de nginx, por ejemplo:
 
@@ -436,7 +436,7 @@ kubectl -n bench run roto-imagen --image=nginx:1.27
 kubectl set image pod/roto-imagen c=nginx:latest -n bench
 ```
 
-O edita el manifest y aplica con un tag existente, p. ej. `nginx:1.27`.</td></tr><tr><td>imagepull</td><td>minimax-cloud</td><td>correcto</td><td>57.3</td><td>18</td><td>36778/2364</td><td>0.0000</td><td class=ans>## Diagnóstico
+O edita el manifest y aplica con un tag existente, p. ej. `nginx:1.27`.</td></tr><tr><td>imagepull</td><td>minimax-cloud</td><td>correcto</td><td>57.3</td><td>18</td><td>36778/2364</td><td>0.0139</td><td class=ans>## Diagnóstico
 
 **Causa raíz:** La imagen referenciada **no existe en Docker Hub**.
 
@@ -532,7 +532,7 @@ while True: a.append(&#x27; &#x27;*10**6)
 ```
 Este script crea una lista que crece indefinidamente (~1MB por iteración), consumiendo memoria sin límite. El contenedor tiene `limits.memory: 64Mi`, por lo que el kernel lo mata rápidamente por OOM (**exitCode 137, reason: OOMKilled**), y Kubernetes lo reinicia en bucle (`restartCount: 4`, `CrashLoopBackOff` inminente).
 
-No es un problema de configuración del clúster ni de nodos: es un **memory leak intencional/de diseño en el código de la aplicación**, combinado con un lím</td></tr><tr><td>oom</td><td>glm-cloud</td><td>correcto</td><td>8.4</td><td>3</td><td>5426/493</td><td>0.0000</td><td class=ans>## Diagnóstico
+No es un problema de configuración del clúster ni de nodos: es un **memory leak intencional/de diseño en el código de la aplicación**, combinado con un lím</td></tr><tr><td>oom</td><td>glm-cloud</td><td>correcto</td><td>8.4</td><td>3</td><td>5426/493</td><td>0.0098</td><td class=ans>## Diagnóstico
 
 **Causa raíz exacta:** El contenedor ejecuta un bucle infinito en Python que consume toda la memoria disponible de forma deliberada:
 
@@ -550,7 +550,7 @@ Con un límite de memoria de **64Mi**, el kernel mata el proceso (exit code 137 
 Este pod es un escenario de prueba (benchmark). Opciones:
 
 1. **Eliminar el pod** (no es un servicio real, es deliberadamente roto):
-  </td></tr><tr><td>oom</td><td>kimi-cloud</td><td>correcto</td><td>6.6</td><td>2</td><td>3031/359</td><td>0.0000</td><td class=ans>**Causa raíz:** El container `c` ejecuta un script Python con un `while True` que añade cadenas de 1 MB sin límite, y el Pod tiene un `memory limit` de **64Mi**. El kernel mata el proceso por OOM (exit code 137, reason `OOMKilled`), en bucle.
+  </td></tr><tr><td>oom</td><td>kimi-cloud</td><td>correcto</td><td>6.6</td><td>2</td><td>3031/359</td><td>0.0043</td><td class=ans>**Causa raíz:** El container `c` ejecuta un script Python con un `while True` que añade cadenas de 1 MB sin límite, y el Pod tiene un `memory limit` de **64Mi**. El kernel mata el proceso por OOM (exit code 137, reason `OOMKilled`), en bucle.
 
 **Fix concreto:**
 ```yaml
@@ -564,7 +564,7 @@ Y, si es código real, corregir el leak de memoria (limitar tamaño de la lista 
 
 Aplicar:
 ```bash
-kubectl patch pod roto-oom -n bench --type merge -p &#x27;{&quot;spec&quot;:{&quot;containers&quot;:[{&quot;name&quot;:&quot;c&quot;,&quot;res</td></tr><tr><td>oom</td><td>minimax-cloud</td><td>fallo</td><td>59.9</td><td>12</td><td>21107/1533</td><td>0.0000</td><td class=ans></td></tr><tr><td>oom</td><td>ollama-qwen</td><td>correcto</td><td>123.0</td><td>4</td><td>8905/1260</td><td>0.0000</td><td class=ans>## DIAGNÓSTICO - CAUSA RAÍZ IDENTIFICADA 🎯
+kubectl patch pod roto-oom -n bench --type merge -p &#x27;{&quot;spec&quot;:{&quot;containers&quot;:[{&quot;name&quot;:&quot;c&quot;,&quot;res</td></tr><tr><td>oom</td><td>minimax-cloud</td><td>fallo</td><td>59.9</td><td>12</td><td>21107/1533</td><td>0.0082</td><td class=ans></td></tr><tr><td>oom</td><td>ollama-qwen</td><td>correcto</td><td>123.0</td><td>4</td><td>8905/1260</td><td>0.0000</td><td class=ans>## DIAGNÓSTICO - CAUSA RAÍZ IDENTIFICADA 🎯
 
 **Problema:** `roto-oom` está siendo **matado repetidamente por el OOM Killer**.
 
@@ -636,7 +636,7 @@ Como los pods son inmutables en ese campo, hay que recrearlo:
 
 ```bash
 kubectl -n bench delete pod roto-probe
-# apl</td></tr><tr><td>probefail</td><td>glm-cloud</td><td>correcto</td><td>9.4</td><td>3</td><td>6646/686</td><td>0.0000</td><td class=ans>## Diagnóstico
+# apl</td></tr><tr><td>probefail</td><td>glm-cloud</td><td>correcto</td><td>9.4</td><td>3</td><td>6646/686</td><td>0.0123</td><td class=ans>## Diagnóstico
 
 **Causa raíz:** La readiness probe está configurada incorrectamente.
 
@@ -657,7 +657,7 @@ Cambiar el puerto de la readiness probe de `8080` a `80`:
 readinessProbe:
   httpGet:
     path: /
-    port: 80        # ← puerto correcto de ngi</td></tr><tr><td>probefail</td><td>kimi-cloud</td><td>correcto</td><td>11.3</td><td>4</td><td>30970/447</td><td>0.0000</td><td class=ans>**Diagnóstico:**
+    port: 80        # ← puerto correcto de ngi</td></tr><tr><td>probefail</td><td>kimi-cloud</td><td>correcto</td><td>11.3</td><td>4</td><td>30970/447</td><td>0.0312</td><td class=ans>**Diagnóstico:**
 
 - Pod `roto-probe` en `Running` pero `0/1` Ready.
 - Logs de Nginx: arranca correctamente.
@@ -679,7 +679,7 @@ readinessProbe:
   periodSeconds: 5
 ```
 
-¿Aplico el fix?</td></tr><tr><td>probefail</td><td>minimax-cloud</td><td>correcto</td><td>57.0</td><td>16</td><td>34988/2191</td><td>0.0000</td><td class=ans>## Diagnóstico
+¿Aplico el fix?</td></tr><tr><td>probefail</td><td>minimax-cloud</td><td>correcto</td><td>57.0</td><td>16</td><td>34988/2191</td><td>0.0131</td><td class=ans>## Diagnóstico
 
 **Causa raíz:** El `readinessProbe` está configurado contra el puerto **8080**, pero `nginx:1.27` escucha en el puerto **80** por defecto. El contenedor arranca correctamente (nginx está corriendo, workers activos) pero el probe HTTP falla porque nadie responde en 8080 → por eso `Ready = False` y el pod queda 0/1.
 
@@ -748,7 +748,7 @@ El evento del scheduler lo confirma:
 
 Ningún nodo puede satisfacer una petición de 64 CPU cuando el máximo disponible es ~1.93 CPU por nodo (~3.86 CPU en todo el clúster). Además, `preemption: 0/2 nodes are available: Preemption is not helpful` indica que ni siquiera desalojando otros pods se liberaría suficiente CPU.
 
-**Caus</td></tr><tr><td>unschedulable</td><td>glm-cloud</td><td>correcto</td><td>10.6</td><td>4</td><td>20394/682</td><td>0.0000</td><td class=ans>## Diagnóstico — Causa raíz
+**Caus</td></tr><tr><td>unschedulable</td><td>glm-cloud</td><td>correcto</td><td>10.6</td><td>4</td><td>20394/682</td><td>0.0316</td><td class=ans>## Diagnóstico — Causa raíz
 
 El pod `roto-pending` está en estado **Pending** porque el scheduler no puede asignarlo a ningún nodo. El motivo:
 
@@ -762,7 +762,7 @@ Es un **error de configuración**: la request de CPU es absurdamente alta para u
 
 ## Fix concreto
 
-Redu</td></tr><tr><td>unschedulable</td><td>kimi-cloud</td><td>correcto</td><td>9.4</td><td>2</td><td>32865/563</td><td>0.0000</td><td class=ans>**Causa raíz:** El pod solicita **64 CPUs** (`resources.requests.cpu: &quot;64&quot;`) y el cluster tiene 1 solo nodo sin capacidad suficiente. El scheduler no puede ubicarlo: `Insufficient cpu`.
+Redu</td></tr><tr><td>unschedulable</td><td>kimi-cloud</td><td>correcto</td><td>9.4</td><td>2</td><td>32865/563</td><td>0.0335</td><td class=ans>**Causa raíz:** El pod solicita **64 CPUs** (`resources.requests.cpu: &quot;64&quot;`) y el cluster tiene 1 solo nodo sin capacidad suficiente. El scheduler no puede ubicarlo: `Insufficient cpu`.
 
 **Fix concreto:** Reducir el request de CPU a un valor realista, por ejemplo `100m` o `500m`.
 
@@ -771,7 +771,7 @@ kubectl patch pod roto-pending -n bench --type merge -p \
   &#x27;{&quot;spec&quot;:{&quot;containers&quot;:[{&quot;name&quot;:&quot;c&quot;,&quot;resources&quot;:{&quot;requests&quot;:{&quot;cpu&quot;:&quot;100m&quot;}}}]}}&#x27;
 ```
 
-O reaplicar el manifest corregido. Con eso se programará inmediatamente.</td></tr><tr><td>unschedulable</td><td>minimax-cloud</td><td>correcto</td><td>46.6</td><td>11</td><td>22933/1549</td><td>0.0000</td><td class=ans>## Diagnóstico
+O reaplicar el manifest corregido. Con eso se programará inmediatamente.</td></tr><tr><td>unschedulable</td><td>minimax-cloud</td><td>correcto</td><td>46.6</td><td>11</td><td>22933/1549</td><td>0.0087</td><td class=ans>## Diagnóstico
 
 **Causa raíz:** El pod solicita un `cpu: &quot;64&quot;` (64 CPUs) en `resources.requests`, que ningún nodo del cluster puede satisfacer.
 
