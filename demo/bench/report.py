@@ -21,6 +21,14 @@ LABEL = {"ollama-qwen": "Qwen 3.5 4B · local", "qwen36-27b": "Qwen 3.6 27B · l
 SCEN_TITLE = {"imagepull": "Imagen inexistente", "crashloop": "CrashLoopBackOff",
               "oom": "OOMKilled", "badconfig": "ConfigMap fantasma",
               "probefail": "Readiness probe rota", "unschedulable": "Pod imposible de programar"}
+SCEN_DESC = {
+    "imagepull": "El test crea un pod con una imagen que no existe (nginx:noexiste) → ImagePullBackOff.",
+    "crashloop": "Contenedor que arranca, loguea «ERROR fatal: config invalida» y sale con código 1 → CrashLoopBackOff.",
+    "oom": "Proceso Python que acumula memoria sin freno dentro de un límite de 64Mi → OOMKilled (exit 137).",
+    "badconfig": "Pod que monta env desde un ConfigMap inexistente → CreateContainerConfigError.",
+    "probefail": "nginx sirve en el puerto 80 pero la readinessProbe apunta al 8080 → Running pero nunca Ready.",
+    "unschedulable": "Pod que pide 64 CPUs que ningún nodo tiene → Pending por Insufficient cpu.",
+}
 BADGE = {"correcto": ("✅", "Correcto"), "parcial": ("⚠️", "Parcial"),
          "fallo": ("❌", "Falló"), "alucino": ("👻", "Alucinó"), "error": ("💥", "Error")}
 
@@ -92,7 +100,9 @@ def main():
 <div class=track><div class=bar style="width:{w:.0f}%;background:{color[r['brain']]}">{dots}</div></div>
 <div class=lmeta>{r['seconds']:.0f}s · {r['steps']} pasos · {r['tokens_in'] + r['tokens_out']} tok · ${r['cost_usd']:.4f}
  <span class=badge>{icon} {word}</span>{' · 🔁' + str(r['tool_errors']) if r['tool_errors'] else ''}</div></div>"""
-        sections += f"<h2>{html.escape(SCEN_TITLE.get(sc, sc))}</h2>{lanes}"
+        desc = SCEN_DESC.get(sc, "")
+        sections += (f"<h2>{html.escape(SCEN_TITLE.get(sc, sc))}</h2>"
+                     f"<p class=sdesc>{html.escape(desc)}</p>{lanes}")
 
     table = "<details><summary>datos y respuestas completas (revisión)</summary><table><tr><th>escenario</th><th>cerebro</th><th>veredicto</th><th>s</th><th>pasos</th><th>tok in/out</th><th>$</th><th>respuesta</th></tr>"
     for (sc, b), r in sorted(rows.items()):
@@ -106,7 +116,8 @@ def main():
 <title>¿Cuánto modelo necesita un SRE?</title><style>
  body{{font-family:ui-monospace,Menlo,monospace;background:#1a1a19;color:#fff;margin:0;padding:2rem;max-width:70rem;margin-inline:auto}}
  h1{{font-size:1.3rem}} h1 em{{color:#c3c2b7;font-style:normal;font-size:.85rem;display:block;margin-top:.3rem}}
- h2{{font-size:1rem;color:#c3c2b7;margin:1.6rem 0 .6rem;border-top:1px solid #333;padding-top:1rem}}
+ h2{{font-size:1rem;color:#c3c2b7;margin:1.6rem 0 .2rem;border-top:1px solid #333;padding-top:1rem}}
+ .sdesc{{font-size:.75rem;color:#8b8a82;margin:.1rem 0 .7rem}}
  .tiles{{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.8rem;margin:1.2rem 0}}
  .tile{{background:#222220;border:1px solid #333;border-radius:8px;padding:1rem;position:relative}}
  .dot{{width:10px;height:10px;border-radius:50%;position:absolute;top:1rem;right:1rem}}

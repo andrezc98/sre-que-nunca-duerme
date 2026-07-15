@@ -2,7 +2,8 @@
 <title>¿Cuánto modelo necesita un SRE?</title><style>
  body{font-family:ui-monospace,Menlo,monospace;background:#1a1a19;color:#fff;margin:0;padding:2rem;max-width:70rem;margin-inline:auto}
  h1{font-size:1.3rem} h1 em{color:#c3c2b7;font-style:normal;font-size:.85rem;display:block;margin-top:.3rem}
- h2{font-size:1rem;color:#c3c2b7;margin:1.6rem 0 .6rem;border-top:1px solid #333;padding-top:1rem}
+ h2{font-size:1rem;color:#c3c2b7;margin:1.6rem 0 .2rem;border-top:1px solid #333;padding-top:1rem}
+ .sdesc{font-size:.75rem;color:#8b8a82;margin:.1rem 0 .7rem}
  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.8rem;margin:1.2rem 0}
  .tile{background:#222220;border:1px solid #333;border-radius:8px;padding:1rem;position:relative}
  .dot{width:10px;height:10px;border-radius:50%;position:absolute;top:1rem;right:1rem}
@@ -43,7 +44,7 @@
 <div class=tname>Claude Opus 4.8 · Bedrock</div>
 <div class=big>100%</div><div class=sub>aciertos (6/6)</div>
 <div class=sub2>$0.0765 por diagnóstico correcto · 16s prom.</div></div></div>
-<h2>Imagen inexistente</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+<h2>Imagen inexistente</h2><p class=sdesc>El test crea un pod con una imagen que no existe (nginx:noexiste) → ImagePullBackOff.</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:23%;background:#3987e5"><span class=step title="k8s_get_resources" style="left:50%"></span></div></div>
 <div class=lmeta>13s · 1 pasos · 5177 tok · $0.0000
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Qwen 3.6 27B · local</div>
@@ -67,7 +68,7 @@
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:21%;background:#d95926"><span class=step title="k8s_get_resources" style="left:50%"></span></div></div>
 <div class=lmeta>12s · 1 pasos · 7028 tok · $0.0498
- <span class=badge>✅ Correcto</span></div></div><h2>CrashLoopBackOff</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+ <span class=badge>✅ Correcto</span></div></div><h2>CrashLoopBackOff</h2><p class=sdesc>Contenedor que arranca, loguea «ERROR fatal: config invalida» y sale con código 1 → CrashLoopBackOff.</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_pod_logs" style="left:25%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
 <div class=lmeta>102s · 3 pasos · 9416 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
@@ -88,7 +89,7 @@
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:16%;background:#d95926"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>17s · 2 pasos · 12834 tok · $0.0862
- <span class=badge>✅ Correcto</span></div></div><h2>OOMKilled</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+ <span class=badge>✅ Correcto</span></div></div><h2>OOMKilled</h2><p class=sdesc>Proceso Python que acumula memoria sin freno dentro de un límite de 64Mi → OOMKilled (exit 137).</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_pod_logs" style="left:20%"></span><span class=step title="k8s_get_resources" style="left:40%"></span><span class=step title="k8s_get_resources" style="left:60%"></span><span class=step title="k8s_get_resources" style="left:80%"></span></div></div>
 <div class=lmeta>123s · 4 pasos · 10165 tok · $0.0000
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
@@ -109,7 +110,7 @@
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:16%;background:#d95926"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>20s · 2 pasos · 8331 tok · $0.0642
- <span class=badge>✅ Correcto</span></div></div><h2>ConfigMap fantasma</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+ <span class=badge>✅ Correcto</span></div></div><h2>ConfigMap fantasma</h2><p class=sdesc>Pod que monta env desde un ConfigMap inexistente → CreateContainerConfigError.</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"></div></div>
 <div class=lmeta>360s · 0 pasos · 0 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
@@ -130,7 +131,7 @@
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:6%;background:#d95926"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>14s · 2 pasos · 7483 tok · $0.0571
- <span class=badge>✅ Correcto</span> · 🔁1</div></div><h2>Readiness probe rota</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+ <span class=badge>✅ Correcto</span> · 🔁1</div></div><h2>Readiness probe rota</h2><p class=sdesc>nginx sirve en el puerto 80 pero la readinessProbe apunta al 8080 → Running pero nunca Ready.</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_resources" style="left:25%"></span><span class=step title="k8s_get_pod_logs" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:75%"></span></div></div>
 <div class=lmeta>228s · 3 pasos · 10851 tok · $0.0000
  <span class=badge>✅ Correcto</span> · 🔁1</div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
@@ -151,7 +152,7 @@
  <span class=badge>✅ Correcto</span></div></div><div class=lane><div class=lname>Claude Opus 4.8 · Bedrock</div>
 <div class=track><div class=bar style="width:7%;background:#d95926"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_resources" style="left:67%"></span></div></div>
 <div class=lmeta>17s · 2 pasos · 17255 tok · $0.1088
- <span class=badge>✅ Correcto</span></div></div><h2>Pod imposible de programar</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
+ <span class=badge>✅ Correcto</span></div></div><h2>Pod imposible de programar</h2><p class=sdesc>Pod que pide 64 CPUs que ningún nodo tiene → Pending por Insufficient cpu.</p><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"></div></div>
 <div class=lmeta>226s · 0 pasos · 0 tok · $0.0000
  <span class=badge>❌ Falló</span></div></div><div class=lane><div class=lname>GLM 5.2 · Ollama Cloud</div>
