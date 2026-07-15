@@ -10,8 +10,10 @@ variable "cluster_name" {
 }
 
 variable "kubernetes_version" {
+  # 1.36 = misma versión que el cluster kind de la demo (v1.36.1) y standard
+  # support hasta ago-2027. (1.33 moría el 2026-07-28: dos semanas.)
   type    = string
-  default = "1.33"
+  default = "1.36"
 }
 
 # VPC EXISTENTE donde se despliega (no se crea red nueva, se reutiliza su IGW).
