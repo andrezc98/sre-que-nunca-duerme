@@ -21,15 +21,21 @@
 <div class=tiles><div class=tile><div class=dot style="background:#3987e5"></div>
 <div class=tname>Qwen 3.5 4B · local</div>
 <div class=big>100%</div><div class=sub>aciertos (1/1)</div>
-<div class=sub2>$0 por diagnóstico correcto · 26s prom.</div></div><div class=tile><div class=dot style="background:#c98500"></div>
+<div class=sub2>$0 por diagnóstico correcto · 26s prom.</div></div><div class=tile><div class=dot style="background:#199e70"></div>
+<div class=tname>Qwen 3.6 27B · local</div>
+<div class=big>100%</div><div class=sub>aciertos (1/1)</div>
+<div class=sub2>$0 por diagnóstico correcto · 22s prom.</div></div><div class=tile><div class=dot style="background:#008300"></div>
 <div class=tname>Claude Sonnet 4.6 · Bedrock</div>
 <div class=big>100%</div><div class=sub>aciertos (1/1)</div>
 <div class=sub2>$0.0282 por diagnóstico correcto · 15s prom.</div></div></div>
 <h2>Imagen inexistente</h2><div class=lane><div class=lname>Qwen 3.5 4B · local</div>
 <div class=track><div class=bar style="width:100%;background:#3987e5"><span class=step title="k8s_get_resources" style="left:12%"></span><span class=step title="k8s_get_pod_logs" style="left:25%"></span><span class=step title="k8s_get_resources" style="left:38%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:62%"></span><span class=step title="k8s_get_resources" style="left:75%"></span><span class=step title="k8s_get_resources" style="left:88%"></span></div></div>
 <div class=lmeta>26s · 7 pasos · 19739 tok · $0.0000
+ <span class=badge>✅ Correcto</span> · 🔁2</div></div><div class=lane><div class=lname>Qwen 3.6 27B · local</div>
+<div class=track><div class=bar style="width:87%;background:#199e70"><span class=step title="k8s_get_resources" style="left:12%"></span><span class=step title="k8s_get_pod_logs" style="left:25%"></span><span class=step title="k8s_get_resources" style="left:38%"></span><span class=step title="k8s_get_resources" style="left:50%"></span><span class=step title="k8s_get_resources" style="left:62%"></span><span class=step title="k8s_get_resources" style="left:75%"></span><span class=step title="k8s_get_resources" style="left:88%"></span></div></div>
+<div class=lmeta>22s · 7 pasos · 19697 tok · $0.0000
  <span class=badge>✅ Correcto</span> · 🔁2</div></div><div class=lane><div class=lname>Claude Sonnet 4.6 · Bedrock</div>
-<div class=track><div class=bar style="width:60%;background:#c98500"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
+<div class=track><div class=bar style="width:60%;background:#008300"><span class=step title="k8s_get_resources" style="left:33%"></span><span class=step title="k8s_get_pod_logs" style="left:67%"></span></div></div>
 <div class=lmeta>15s · 2 pasos · 6319 tok · $0.0282
  <span class=badge>✅ Correcto</span> · 🔁1</div></div>
 <details><summary>datos y respuestas completas (revisión)</summary><table><tr><th>escenario</th><th>cerebro</th><th>veredicto</th><th>s</th><th>pasos</th><th>tok in/out</th><th>$</th><th>respuesta</th></tr><tr><td>imagepull</td><td>bedrock-claude</td><td>correcto</td><td>15.3</td><td>2</td><td>5551/768</td><td>0.0282</td><td class=ans>## 🔍 Diagnóstico — Causa Raíz Identificada
@@ -70,5 +76,23 @@ El pod **nunca arrancó**. El kubelet intentó descargar la imagen `nginx:noexis
 
 ---
 
-## ✅ Fix </td></tr></table></details>
+## ✅ Fix </td></tr><tr><td>imagepull</td><td>qwen36-27b</td><td>correcto</td><td>22.3</td><td>7</td><td>18518/1179</td><td>0.0000</td><td class=ans>## 🔍 Causa Raíz Identificada
+
+**Imagen inexistente en Docker Hub.**
+
+El pod `roto-imagen` tiene configurada la imagen `nginx:noexiste`, un tag que **no existe** en el registro `docker.io/library/nginx`. Esto provoca el ciclo:
+
+```
+ErrImagePull → ImagePullBackOff (reintentando cada vez con más espera)
+```
+
+&gt; El pod entró en `ImagePullBackOff` y Kubernetes lo elimina del listado activo, por eso aparece el namespace vacío al consultarlo directamente.
+
+---
+
+## ✅ Fix Concreto
+
+Corregir el tag de la imagen por uno válido, por ejemplo `nginx:latest` o una versión específica como `nginx:1.27`:
+
+```bas</td></tr></table></details>
 </body></html>
