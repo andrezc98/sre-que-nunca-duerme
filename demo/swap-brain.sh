@@ -9,8 +9,8 @@
 set -euo pipefail
 MODEL="${1:-}"
 case "$MODEL" in
-  ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus) ;;
-  *) echo "Uso: $0 <ollama-qwen|bedrock-claude|bedrock-sonnet-5|bedrock-opus>"; exit 1 ;;
+  ollama-qwen|qwen36-27b|bedrock-claude|bedrock-sonnet-5|bedrock-opus) ;;
+  *) echo "Uso: $0 <ollama-qwen|qwen36-27b|bedrock-claude|bedrock-sonnet-5|bedrock-opus>"; exit 1 ;;
 esac
 
 kubectl -n kagent patch agent sre-agent --type merge \

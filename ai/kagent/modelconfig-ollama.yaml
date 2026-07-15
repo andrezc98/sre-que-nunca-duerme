@@ -12,3 +12,19 @@ spec:
     # En kind sobre Docker Desktop u OrbStack, los pods alcanzan al host por
     # host.docker.internal (verificado en OrbStack con un pod curl).
     host: http://host.docker.internal:11434
+---
+# Segundo peldaño local: la generación más nueva que cabe en la laptop (36GB).
+# Derivado con num_ctx 32768 (el tag original trae 256K de contexto y el KV
+# cache no cabría). Crear en la laptop:
+#   printf 'FROM qwen3.6:27b\nPARAMETER num_ctx 32768\n' > /tmp/Modelfile
+#   ollama create qwen3.6:27b-32k -f /tmp/Modelfile
+apiVersion: kagent.dev/v1alpha2
+kind: ModelConfig
+metadata:
+  name: qwen36-27b
+  namespace: kagent
+spec:
+  provider: Ollama
+  model: qwen3.6:27b-32k
+  ollama:
+    host: http://host.docker.internal:11434
