@@ -22,16 +22,20 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 
-# cerebro -> (contexto kubectl, URL del kagent-controller vía port-forward)
+# cerebro -> (contexto kubectl, URL del kagent-controller).
+# Los port-forwards los crea y destruye ESTE script (puertos propios 18083/18084):
+# un pf compartido/reciclado puede quedar apuntando al cluster equivocado y
+# el benchmark entero mide al agente incorrecto (nos pasó: 8083 quedó en EKS).
+PF_PORTS = {"kind-kcd": 18083, "eks-demo": 18084}
 BRAINS = {
-    "ollama-qwen":      ("kind-kcd", "http://localhost:8083"),
-    "qwen36-27b":       ("kind-kcd", "http://localhost:8083"),
-    "glm-cloud":        ("kind-kcd", "http://localhost:8083"),
-    "minimax-cloud":    ("kind-kcd", "http://localhost:8083"),
-    "kimi-cloud":       ("kind-kcd", "http://localhost:8083"),
-    "bedrock-claude":   ("eks-demo", "http://localhost:8084"),
-    "bedrock-sonnet-5": ("eks-demo", "http://localhost:8084"),
-    "bedrock-opus":     ("eks-demo", "http://localhost:8084"),
+    "ollama-qwen":      ("kind-kcd", "http://localhost:18083"),
+    "qwen36-27b":       ("kind-kcd", "http://localhost:18083"),
+    "glm-cloud":        ("kind-kcd", "http://localhost:18083"),
+    "minimax-cloud":    ("kind-kcd", "http://localhost:18083"),
+    "kimi-cloud":       ("kind-kcd", "http://localhost:18083"),
+    "bedrock-claude":   ("eks-demo", "http://localhost:18084"),
+    "bedrock-sonnet-5": ("eks-demo", "http://localhost:18084"),
+    "bedrock-opus":     ("eks-demo", "http://localhost:18084"),
 }
 
 # USD por millón de tokens (in, out). 0 = local / plan flat.
@@ -169,6 +173,13 @@ def run(scenario: str, brain: str) -> dict:
     try:
         result, seconds = ask(url, PROMPT.format(pod=sc["pod"]))
         m = metrics(result)
+        if not m["answer"].strip():  # respuesta vacía: reintenta una vez y guarda el crudo
+            time.sleep(20)
+            result, retry_secs = ask(url, PROMPT.format(pod=sc["pod"]))
+            m = metrics(result)
+            seconds += retry_secs
+            if not m["answer"].strip():
+                m["raw_debug"] = json.dumps(result, ensure_ascii=False)[:2000]
         error = None
     except Exception as e:
         m, seconds, error = {"tokens_in": 0, "tokens_out": 0, "steps": 0,
@@ -193,9 +204,19 @@ if __name__ == "__main__":
     ap.add_argument("--brains", nargs="+", default=list(BRAINS), choices=list(BRAINS))
     ap.add_argument("--scenarios", nargs="+", default=list(SCENARIOS), choices=list(SCENARIOS))
     args = ap.parse_args()
-    # agrupado por cluster para minimizar swaps de cerebro
-    for scenario in args.scenarios:
-        for brain in sorted(args.brains, key=lambda b: BRAINS[b][0]):
-            run(scenario, brain)
+    contexts = {BRAINS[b][0] for b in args.brains}
+    pfs = [subprocess.Popen(
+        ["kubectl", "--context", c, "-n", "kagent", "port-forward",
+         f"--address=127.0.0.1", "svc/kagent-controller", f"{PF_PORTS[c]}:8083"],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) for c in contexts]
+    time.sleep(5)
+    try:
+        # agrupado por cluster para minimizar swaps de cerebro
+        for scenario in args.scenarios:
+            for brain in sorted(args.brains, key=lambda b: BRAINS[b][0]):
+                run(scenario, brain)
+    finally:
+        for p in pfs:
+            p.terminate()
     print(f"\nresultados en {HERE / 'results.jsonl'} — genera el reporte con: "
           f"python3 demo/bench/report.py")
