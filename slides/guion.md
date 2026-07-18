@@ -12,10 +12,10 @@
 | Min | Slides | Bloque |
 |---|---|---|
 | 0:00–0:30 | 1 | Portada + quién soy |
-| 0:30–3:00 | 2–6 | Cold open: la noche y sus números (~30 s por slide, NO explicar de más) |
-| 3:00–5:00 | 7–8 | Tesis + elenco |
-| 5:00–6:30 | 9 | Prólogo: la escena montada |
-| 6:30–9:30 | 10–12 | 7:31 p.m. — el incidente y los ojos |
+| 0:30–4:30 | 2–6 | Cold open con fuentes al frente (~50-55 s por slide de número) |
+| 4:30–6:00 | 7–8 | Tesis + elenco (elenco COMPRIMIDO a ~50 s) |
+| 6:00–7:00 | 9 | Prólogo: la escena montada (1 min, no más) |
+| 7:00–9:30 | 10–12 | 7:31 p.m. — el incidente y los ojos |
 | 9:30–11:30 | 13–14 | Las manos: el agente investiga |
 | 11:30–17:00 | 15–19 | El versus + benchmark (el corazón) |
 | 17:00–19:30 | 20–21 | La lección + el estado del arte |
@@ -36,21 +36,22 @@
 ### S2 — 7:04 p.m. [0:30]
 "Viernes, 7:04 de la tarde. Cierras la laptop. Terminaste por hoy. Pero el celular se queda en la mesa de noche con volumen — por si acaso. Todos aquí saben qué significa ese 'por si acaso'. Esta charla es esa noche, contada hora por hora. Primero: ¿qué está en juego mientras no miras?"
 
-### S3 — $15,000/minuto [1:00]
-"Quince mil dólares. Por minuto. Eso pierde en promedio una empresa grande con un sistema caído — Oxford Economics, 2,000 ejecutivos encuestados, incluye Latinoamérica. Al año: 600 mil millones. Y subió 50% en dos años."
-→ **$15k/min · $600B/año · +50%** (Splunk/Oxford 2026)
+### S3 — $15,000/minuto [1:00 — ~55 s, con fuente al frente]
+"Según 'The Hidden Costs of Downtime' — un estudio de Oxford Economics con Splunk, 2,000 ejecutivos encuestados en 20 países, Latinoamérica incluida — un minuto de sistema caído le cuesta a una empresa grande **quince mil dólares**. Por minuto. Al año, solo entre las 2,000 empresas más grandes del mundo: **600 mil millones**. Y el mismo estudio dice dos cosas más que duelen: subió **50% en solo dos años** — la edición 2024 medía 400 mil millones — y cada empresa pierde en promedio **95 millones al año** solo en ingresos que no vuelven. New Relic lo mide por incidente: la mediana de un outage grave es **2 millones de dólares por hora** — y baja a la mitad cuando tienes observabilidad completa. Cada minuto que tardas en entender qué pasa, tiene precio."
+(Opcional, aterrizaje local: "diez minutos de downtime = un departamento en Lima.")
+→ Splunk/Oxford 2026 + New Relic 2025
 
-### S4 — 34% toil [1:30]
-"Y el costo humano: un tercio de tu semana se va en toil — la chamba manual y repetitiva que mañana hay que volver a hacer. Reiniciar pods, revisar alertas falsas, copiar logs a un ticket. Y viene subiendo: 25, 30, 34 por ciento en tres años. Google puso la línea roja en 50: pasado eso ya no eres ingeniero, eres bombero."
-→ **34% (25→30→34)** (Catchpoint 2024–26) · **tope 50%** (Google SRE)
+### S4 — 34% toil [1:55 — ~55 s]
+"El SRE Report de Catchpoint — la encuesta anual del gremio — viene midiendo lo mismo tres años seguidos: el toil, la chamba manual y repetitiva que no construye nada, era 25% de tu semana en 2024, 30 en 2025, **34 este año**. La tendencia es lo grave. El libro de SRE de Google le puso la línea roja en 50%, y tiene una frase que me encanta: *'el toil, si lo dejas, se expande hasta llenar el 100% del tiempo de todos'*. ¿Y las alertas que se supone nos protegen? Una encuesta de este año a más de mil SREs encontró que **78% tuvo incidentes donde NINGUNA alerta disparó** — y 44% tuvo un outage por alertas que sí llegaron y fueron ignoradas o suprimidas. No nos falta telemetría. Nos falta quien la lea."
+→ Catchpoint 2024–26 · Google SRE cap. 5 · NeuBird 2026 (n=1,039; si preguntan la fuente: NeuBird, vendor de AI SRE — decirlo)
 
-### S5 — 7% [2:00]
-"¿Y la IA no venía a salvarnos? Aquí está la paradoja: 82 de cada 100 empresas con contenedores ya corren Kubernetes en producción. 66 de cada 100 que usan IA generativa la corren sobre Kubernetes. Pero solo 7 la despliegan a diario. El resto: piloto, demo, 'la próxima sprint'. Entre el 66 y el 7 está el hueco del que trata esta charla."
-→ **82 / 66 / 7** (CNCF Annual Survey 2025)
+### S5 — 7% [2:50 — ~50 s]
+"La encuesta anual de la CNCF — la fundación detrás de Kubernetes, publicada en enero — cuenta la paradoja en tres números. **82%** de las empresas con contenedores ya corre Kubernetes en producción — era 66% hace dos años: eso está ganado. **66%** de las que usan IA generativa la corren sobre Kubernetes — la IA ya vive aquí. Pero solo **7%** despliega modelos a diario; 47% dice 'ocasionalmente' y 44% ni siquiera ha empezado. La misma encuesta lo llama 'etapa temprana de madurez productiva de la IA'. Entre ese 66 y ese 7 está el hueco de esta charla: la IA llegó a Kubernetes — pero no llegó a operar."
+→ CNCF Annual Survey 2025
 
-### S6 — $65,000,000 [2:30]
-"Sesenta y cinco millones de dólares. Lo que una sola empresa pagó en un año — no por servidores, no por el producto: por MIRAR sus sistemas. Es la factura de Datadog de Coinbase, estimada por un analista de JP Morgan — lo digo tal cual, no es cifra oficial. ¿El final de la historia? Coinbase migró a Prometheus y Grafana. El mismo stack que vamos a armar hoy. Fin de los números. Ahora, la historia."
-→ **$65M** (Pragmatic Engineer) · observabilidad = **17%** del gasto de infra (Grafana 2025)
+### S6 — $65,000,000 [3:40 — ~55 s]
+"Y lo que cuesta mirar: 2023, llamada de resultados de Datadog. El CFO menciona 'una factura grande que no se repitió'. Un analista de JP Morgan hace la cuenta: **65 millones de dólares** — un solo cliente, un solo año. El CFO confirma: 'una empresa cripto'. The Pragmatic Engineer lo confirmó después con ingenieros de adentro: era Coinbase. Ojo: es estimación de analista, no cifra oficial — lo digo con esa etiqueta. ¿El final de la historia? Coinbase migró a stack propio: Grafana, Prometheus, ClickHouse. El mismo tipo de stack de esta charla. Y no es caso aislado: según la encuesta de Grafana Labs, la observabilidad ya se come **17% del gasto de infraestructura** promedio — hay quien reporta 50 — y el costo es el criterio número uno al elegir herramienta por tercer año consecutivo. En LATAM, con presupuestos en soles, ese porcentaje duele doble. Fin de los números. Ahora, la historia."
+→ Pragmatic Engineer 2023 · Grafana Surveys 2025/26
 
 ### S7 — Tesis [3:00]
 "Esta charla es esa noche, de las 7 de la tarde a las 3 de la mañana. Y la vamos a pasar con tres cosas que esa vez no teníamos: un stack open source que lo ve todo, un cerebro que investiga por ti, y control humano para que no haga tonterías. Lo tercero es lo que separa esta charla del hype."
